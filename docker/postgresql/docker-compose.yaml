@@ -1,0 +1,16 @@
+volumes:
+  db_volume:
+
+services:
+  db:
+    container_name: scriptos-postgres
+    image: postgres:14.13-alpine3.20
+    volumes:
+      - db_volume:/var/lib/postgresql/data
+    restart: always
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_DB: scriptos

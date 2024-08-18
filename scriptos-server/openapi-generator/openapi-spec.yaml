@@ -1,0 +1,19 @@
+openapi: 3.1.0
+info:
+  title: Scriptos API
+  description: The API Specification for the Scriptos Backend
+  version: 1.0.0
+paths:
+  /status:
+    get:
+      operationId: scriptosStatus
+      summary: Check if the backend is running
+      tags:
+        - Status
+      responses:
+        200:
+          description: OK
+          content:
+            text/plain:
+              schema:
+                type: string

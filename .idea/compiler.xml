@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Gradle Imported" enabled="true">
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="false">
+          <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework.boot/spring-boot-configuration-processor/3.3.2/865979850b50f57caf2a9b144b8741970a017543/spring-boot-configuration-processor-3.3.2.jar" />
+        </processorPath>
+        <module name="scriptos-server.main" />
+      </profile>
+    </annotationProcessing>
+  </component>
+</project>

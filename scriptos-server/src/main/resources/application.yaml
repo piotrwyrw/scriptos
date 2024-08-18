@@ -8,3 +8,7 @@ spring:
     url: jdbc:postgresql://localhost:5432/scriptos
 server:
   port: 8080
+scriptos:
+  auth:
+    unused-token-expiration: 2800
+    hard-token-expiration: 5600

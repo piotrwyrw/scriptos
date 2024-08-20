@@ -1,6 +1,7 @@
 package dev.piotrwyrw.scriptos.controller
 
 import dev.piotrwyrw.scriptos.api.GroupsApi
+import dev.piotrwyrw.scriptos.api.model.AddUserToGroupRequest
 import dev.piotrwyrw.scriptos.api.model.CreateGroupRequest
 import dev.piotrwyrw.scriptos.api.model.GroupIdResponse
 import dev.piotrwyrw.scriptos.service.GroupService
@@ -16,4 +17,8 @@ class GroupsController(
         return ResponseEntity.ok(GroupIdResponse(groupService.createGroup(createGroupRequest.name)))
     }
 
+    override fun addUserToGroup(addUserToGroupRequest: AddUserToGroupRequest): ResponseEntity<Unit> {
+        groupService.addUserToGroup(addUserToGroupRequest)
+        return ResponseEntity.ok().build()
+    }
 }

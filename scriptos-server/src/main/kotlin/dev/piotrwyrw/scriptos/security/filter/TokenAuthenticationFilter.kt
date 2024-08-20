@@ -1,4 +1,4 @@
-package dev.piotrwyrw.scriptos.security
+package dev.piotrwyrw.scriptos.security.filter
 
 import dev.piotrwyrw.scriptos.service.AuthenticationService
 import dev.piotrwyrw.scriptos.util.currentUser

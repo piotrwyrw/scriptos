@@ -7,10 +7,10 @@ create table "group"
 
 create table group_membership
 (
-    id       uuid primary key not null,
+    user_id  uuid not null,
+    group_id uuid not null,
 
-    user_id  uuid             not null,
-    group_id uuid             not null,
+    primary key (user_id, group_id),
 
     foreign key (user_id) references "user" (id),
     foreign key (group_id) references "group" (id)

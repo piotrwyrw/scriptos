@@ -60,6 +60,22 @@ paths:
               schema:
                 $ref: "#/components/schemas/groupIdResponse"
 
+  /group/adduser:
+    post:
+      operationId: addUserToGroup
+      summary: Add a user to an existing Scriptos group
+      tags:
+        - Groups
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/addUserToGroupRequest"
+      responses:
+        200:
+          description: OK
+
 components:
   schemas:
     registerRequest:
@@ -114,3 +130,14 @@ components:
         id:
           type: string
           format: uuid
+
+    addUserToGroupRequest:
+      type: object
+      required:
+        - username
+        - groupName
+      properties:
+        username:
+          type: string
+        groupName:
+          type: string

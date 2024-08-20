@@ -1,5 +1,6 @@
-package dev.piotrwyrw.scriptos.security
+package dev.piotrwyrw.scriptos.security.config
 
+import dev.piotrwyrw.scriptos.security.filter.TokenAuthenticationFilter
 import dev.piotrwyrw.scriptos.service.AuthenticationService
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration

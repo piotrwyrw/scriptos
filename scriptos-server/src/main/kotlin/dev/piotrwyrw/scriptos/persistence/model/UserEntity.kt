@@ -25,9 +25,9 @@ class UserEntity {
     @ManyToMany
     @JoinTable(
         name = "group_membership",
-        joinColumns = [JoinColumn(name = "user_id", referencedColumnName = "id")],
-        inverseJoinColumns = [JoinColumn(name = "group_id", referencedColumnName = "id")]
+        joinColumns = [JoinColumn(name = "user_id")],
+        inverseJoinColumns = [JoinColumn(name = "group_id")]
     )
-    lateinit var groups: Set<GroupEntity>
+    lateinit var groups: MutableSet<GroupEntity>
 
 }

@@ -15,6 +15,6 @@ class GroupEntity {
     lateinit var name: String
 
     @ManyToMany(mappedBy = "groups")
-    lateinit var members: Set<UserEntity>
+    lateinit var members: MutableSet<UserEntity>
 
 }

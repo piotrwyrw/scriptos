@@ -22,4 +22,12 @@ class UserEntity {
     @Column(name = "password_hash")
     lateinit var passwordHash: String
 
+    @ManyToMany
+    @JoinTable(
+        name = "group_membership",
+        joinColumns = [JoinColumn(name = "user_id", referencedColumnName = "id")],
+        inverseJoinColumns = [JoinColumn(name = "group_id", referencedColumnName = "id")]
+    )
+    lateinit var groups: Set<GroupEntity>
+
 }

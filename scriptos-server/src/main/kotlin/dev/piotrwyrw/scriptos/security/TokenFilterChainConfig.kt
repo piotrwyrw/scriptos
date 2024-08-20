@@ -20,6 +20,8 @@ class TokenFilterChainConfig(
     fun tokenFilterChain(http: HttpSecurity): SecurityFilterChain {
         http {
             securityMatcher("/**")
+            csrf { disable() }
+            cors { disable() }
             authorizeRequests {
                 authorize(anyRequest, permitAll)
             }

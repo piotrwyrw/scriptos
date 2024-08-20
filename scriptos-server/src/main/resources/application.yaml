@@ -12,3 +12,7 @@ scriptos:
   auth:
     unused-token-expiration: 2800
     hard-token-expiration: 5600
+  groups:
+    common-group-name: common
+  storage:
+    directory: scriptos-data

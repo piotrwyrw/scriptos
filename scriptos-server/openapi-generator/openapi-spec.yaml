@@ -40,15 +40,25 @@ paths:
               schema:
                 $ref: "#/components/schemas/tokenResponse"
 
-  /content:
-    get:
-      operationId: userContent
-      summary: Access the logged in user's content
+  /group:
+    post:
+      operationId: createGroup
+      summary: Create a new Scriptos group
       tags:
-        - UserContent
+        - Groups
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/createGroupRequest"
       responses:
         200:
           description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/groupIdResponse"
 
 components:
   schemas:
@@ -87,3 +97,20 @@ components:
           type: string
         code:
           type: string
+
+    createGroupRequest:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+
+    groupIdResponse:
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          type: string
+          format: uuid

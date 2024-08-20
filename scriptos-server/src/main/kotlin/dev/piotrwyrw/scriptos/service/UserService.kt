@@ -5,6 +5,8 @@ import dev.piotrwyrw.scriptos.exception.ScriptosException
 import dev.piotrwyrw.scriptos.persistence.model.UserEntity
 import dev.piotrwyrw.scriptos.persistence.repository.UserRepository
 import dev.piotrwyrw.scriptos.util.UtilService
+import dev.piotrwyrw.scriptos.util.isValidPassword
+import dev.piotrwyrw.scriptos.util.isValidUsername
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 import java.time.Instant
@@ -37,6 +39,15 @@ class UserService(
     fun register(username: String, password: String) {
         if (usernameTaken(username))
             throw ScriptosException("Username is already taken", HttpStatus.CONFLICT)
+
+        if (!username.isValidUsername())
+            throw ScriptosException("The username does not match the required pattern", HttpStatus.UNPROCESSABLE_ENTITY)
+
+        if (!password.isValidPassword())
+            throw ScriptosException(
+                "The password must not contain leading or trailing whitespaces and be at least 8 characters long",
+                HttpStatus.UNPROCESSABLE_ENTITY
+            )
 
         createUser(username, password)
     }

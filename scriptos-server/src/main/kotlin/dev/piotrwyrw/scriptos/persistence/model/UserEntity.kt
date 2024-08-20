@@ -20,6 +20,6 @@ class UserEntity {
     lateinit var username: String
 
     @Column(name = "password_hash")
-    var passwordHash: String? = null
+    lateinit var passwordHash: String
 
 }

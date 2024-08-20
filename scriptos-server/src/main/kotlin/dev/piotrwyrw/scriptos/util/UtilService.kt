@@ -14,4 +14,6 @@ class UtilService (
 
     fun encodePassword(passwd: String) = bCryptPasswordEncoder.encode(passwd)
 
+    fun comparePassword(passwd: String, hash: String) = bCryptPasswordEncoder.matches(passwd, hash)
+
 }

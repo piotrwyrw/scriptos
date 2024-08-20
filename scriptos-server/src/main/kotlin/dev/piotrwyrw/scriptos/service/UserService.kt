@@ -1,5 +1,6 @@
 package dev.piotrwyrw.scriptos.service
 
+import dev.piotrwyrw.scriptos.api.model.RegisterRequest
 import dev.piotrwyrw.scriptos.exception.ScriptosException
 import dev.piotrwyrw.scriptos.persistence.model.UserEntity
 import dev.piotrwyrw.scriptos.persistence.repository.UserRepository
@@ -18,11 +19,9 @@ class UserService(
 
     fun findUser(id: UUID): UserEntity? = userRepository.findById(id).getOrNull()
 
-    fun usernameTaken(username: String): Boolean = userRepository.findByUsername(username).isEmpty.not()
+    fun byUsername(username: String): UserEntity? = userRepository.findByUsername(username).getOrNull()
 
-    fun userByCredentials(username: String, password: String): UserEntity? =
-        userRepository.findByUsernameAndPasswordHash(username, Optional.of(utilService.encodePassword(password)))
-            .getOrNull()
+    fun usernameTaken(username: String): Boolean = byUsername(username) != null
 
     private fun createUser(username: String, password: String): UserEntity {
         val entity = UserEntity()
@@ -41,5 +40,7 @@ class UserService(
 
         createUser(username, password)
     }
+
+    fun register(request: RegisterRequest) = register(request.username, request.password)
 
 }

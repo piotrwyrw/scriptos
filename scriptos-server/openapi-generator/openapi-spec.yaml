@@ -4,16 +4,86 @@ info:
   description: The API Specification for the Scriptos Backend
   version: 1.0.0
 paths:
-  /status:
-    get:
-      operationId: scriptosStatus
-      summary: Check if the backend is running
+  /register:
+    post:
+      operationId: userRegister
+      summary: Register a new Scriptos user
       tags:
-        - Status
+        - User
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/registerRequest"
+      responses:
+        200:
+          description: OK
+
+  /login:
+    get:
+      operationId: userLogin
+      summary: Login as an existing Scriptos user
+      tags:
+        - User
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/loginRequest"
       responses:
         200:
           description: OK
           content:
-            text/plain:
+            application/json:
               schema:
-                type: string
+                $ref: "#/components/schemas/tokenResponse"
+
+  /content:
+    get:
+      operationId: userContent
+      summary: Access the logged in user's content
+      tags:
+        - UserContent
+      responses:
+        200:
+          description: OK
+
+components:
+  schemas:
+    registerRequest:
+      type: object
+      required:
+        - username
+        - password
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+
+    loginRequest:
+      type: object
+      required:
+        - username
+        - password
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+
+    tokenResponse:
+      type: object
+      properties:
+        token:
+          type: string
+
+    errorResponse:
+      type: object
+      properties:
+        message:
+          type: string
+        code:
+          type: string

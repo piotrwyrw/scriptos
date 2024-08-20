@@ -27,6 +27,7 @@ class SessionService(
         session.userId = user.id
         session.token = utilService.randomSessionTokenString()
         session.createdAt = Instant.now()
+        session.accessedAt = Instant.now()
         sessionRepository.save(session)
         return session
     }

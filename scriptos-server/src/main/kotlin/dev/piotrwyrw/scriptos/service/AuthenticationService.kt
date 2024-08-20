@@ -1,9 +1,8 @@
 package dev.piotrwyrw.scriptos.service
 
-import dev.piotrwyrw.scriptos.exception.ScriptosException
+import dev.piotrwyrw.scriptos.api.model.LoginRequest
 import dev.piotrwyrw.scriptos.security.auth.ScriptosAuthentication
 import dev.piotrwyrw.scriptos.util.UtilService
-import org.springframework.http.HttpStatus
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Service
 
@@ -11,7 +10,7 @@ import org.springframework.stereotype.Service
 class AuthenticationService(
     val sessionService: SessionService,
     val userService: UserService,
-    val utilService: UtilService,
+    val utilService: UtilService
 ) {
 
     fun authenticateRequest(token: String): Boolean {
@@ -23,10 +22,16 @@ class AuthenticationService(
     }
 
     fun login(username: String, password: String): String? {
-        val user = userService.userByCredentials(username, password) ?: return null
+        val user = userService.byUsername(username) ?: return null
+
+        if (!utilService.comparePassword(password, user.passwordHash))
+            return null
+
         val session = sessionService.createSession(user)
         SecurityContextHolder.getContext().authentication = ScriptosAuthentication(user, session)
         return session.token
     }
+
+    fun login(request: LoginRequest) = login(request.username, request.password)
 
 }

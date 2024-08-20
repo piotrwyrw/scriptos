@@ -13,9 +13,9 @@ class PublicFilterChainConfig {
 
     @Bean
     @Order(HIGHEST_PRECEDENCE)
-    fun filterChain(http: HttpSecurity): SecurityFilterChain {
+    fun publicFilterChain(http: HttpSecurity): SecurityFilterChain {
         http {
-            securityMatcher("/status")
+            securityMatcher("/login", "/register")
             authorizeRequests {
                 authorize(anyRequest, permitAll)
             }

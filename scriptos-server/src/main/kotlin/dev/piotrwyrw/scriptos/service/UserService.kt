@@ -8,16 +8,14 @@ import dev.piotrwyrw.scriptos.persistence.repository.UserRepository
 import dev.piotrwyrw.scriptos.util.UtilService
 import dev.piotrwyrw.scriptos.util.isValidPassword
 import dev.piotrwyrw.scriptos.util.isValidUsername
-import jakarta.annotation.PostConstruct
-import org.slf4j.LoggerFactory
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.context.annotation.Lazy
+import jakarta.transaction.Transactional
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 import java.time.Instant
 import java.util.*
 import kotlin.jvm.optionals.getOrNull
 
+@Transactional
 @Service
 class UserService(
     val userRepository: UserRepository,

@@ -6,6 +6,7 @@ import jakarta.transaction.Transactional
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 
+@Transactional
 @Service
 class AdminUserAndCommonGroupService(
     val groupService: GroupService,
@@ -15,7 +16,6 @@ class AdminUserAndCommonGroupService(
 
     val logger = LoggerFactory.getLogger(javaClass)
 
-    @Transactional
     @PostConstruct
     fun ensureAdminUserAndCommonGroupExists() {
         val adminExists = ensureAdminUserExists()
@@ -27,7 +27,6 @@ class AdminUserAndCommonGroupService(
         groupService.addUserToCommonGroup(adminUserConfig.username)
     }
 
-    @Transactional
     fun ensureAdminUserExists(): Boolean {
         if (userService.byUsername(adminUserConfig.username) == null) {
             userService.createUser(adminUserConfig.username, adminUserConfig.password)
@@ -40,7 +39,6 @@ class AdminUserAndCommonGroupService(
         return true
     }
 
-    @Transactional
     fun ensureCommonGroupExists() {
         val commonName = groupService.commonGroupName()
         groupService.groupByName(commonName) ?: run {

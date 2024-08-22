@@ -5,6 +5,7 @@ import dev.piotrwyrw.scriptos.persistence.model.SessionEntity
 import dev.piotrwyrw.scriptos.persistence.model.UserEntity
 import dev.piotrwyrw.scriptos.persistence.repository.SessionRepository
 import dev.piotrwyrw.scriptos.util.UtilService
+import jakarta.transaction.Transactional
 import org.slf4j.LoggerFactory
 import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Service
@@ -13,6 +14,7 @@ import java.time.temporal.ChronoUnit
 import java.util.concurrent.TimeUnit
 import kotlin.jvm.optionals.getOrNull
 
+@Transactional
 @Service
 class SessionService(
     val authConfig: AuthConfiguration,
@@ -49,7 +51,7 @@ class SessionService(
     }
 
     @Scheduled(fixedRate = 20, timeUnit = TimeUnit.SECONDS)
-    private fun deleteExpiredSessions() {
+    fun deleteExpiredSessions() {
         val expiry = expiryValues()
         var length = 0
         sessionRepository.findExpired(expiry.first, expiry.second).let { _it ->

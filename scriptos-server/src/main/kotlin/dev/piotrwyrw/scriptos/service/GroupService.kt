@@ -18,6 +18,7 @@ import java.util.*
 import kotlin.jvm.optionals.getOrNull
 
 @Service
+@Transactional
 class GroupService(
     val groupRepository: GroupRepository,
     val groupsConfig: GroupsConfig,
@@ -47,7 +48,6 @@ class GroupService(
         return group.id
     }
 
-    @Transactional
     fun addUserToGroup(username: String, groupName: String, checkPermissions: Boolean) {
         val group = groupByName(groupName) ?: throw ScriptosException(
             "The group '${groupName}' does not exist",
@@ -110,14 +110,11 @@ class GroupService(
     fun leaveGroup(groupName: String) =
         removeUserFromGroup(currentUser()!!.username, groupName, checkPermissions = true)
 
-    @Transactional
     fun addUserToGroup(username: String, groupName: String) =
         addUserToGroup(username, groupName, checkPermissions = true)
 
-    @Transactional
     fun addUserToCommonGroup(username: String) = addUserToGroup(username, commonGroupName(), checkPermissions = false)
 
-    @Transactional
     fun addUserToGroup(request: AddUserToGroupRequest) = addUserToGroup(request.username, request.groupName)
 
     fun removeUserFromGroup(request: RemoveUserFromGroupRequest) =

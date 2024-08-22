@@ -36,6 +36,7 @@ dependencies {
     implementation("org.flywaydb:flyway-database-postgresql:10.0.0")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.springframework.boot:spring-boot-starter-validation")
+    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.5.0")
     annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
@@ -50,11 +51,11 @@ openApiGenerate {
     apiPackage = "dev.piotrwyrw.scriptos.api"
     modelPackage = "dev.piotrwyrw.scriptos.api.model"
     apiNameSuffix = "Api"
-    generateApiDocumentation = false
-    generateModelDocumentation = false
+    generateApiDocumentation = true
+    generateModelDocumentation = true
     inputSpec = "openapi-generator/openapi-spec.yaml"
     validateSpec = true
-    configOptions.put("documentationProvider", "none")
+    configOptions.put("documentationProvider", "springdoc")
     configOptions.put("useTags", "true")
     configOptions.put("interfaceOnly", "true")
     configOptions.put("useSpringBoot3", "true")

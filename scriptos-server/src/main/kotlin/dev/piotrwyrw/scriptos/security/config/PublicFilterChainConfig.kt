@@ -15,7 +15,7 @@ class PublicFilterChainConfig {
     @Order(HIGHEST_PRECEDENCE)
     fun publicFilterChain(http: HttpSecurity): SecurityFilterChain {
         http {
-            securityMatcher("/login", "/register")
+            securityMatcher("/login", "/register", "/swagger-ui/**", "/v3/**", "/api-docs")
             csrf { disable() }
             cors { disable() }
             authorizeRequests {

@@ -8,7 +8,6 @@ import dev.piotrwyrw.scriptos.persistence.repository.GroupRepository
 import dev.piotrwyrw.scriptos.persistence.repository.UserRepository
 import dev.piotrwyrw.scriptos.util.isValidGroupName
 import jakarta.annotation.PostConstruct
-import org.hibernate.tool.schema.spi.ScriptTargetOutput
 import org.slf4j.LoggerFactory
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service

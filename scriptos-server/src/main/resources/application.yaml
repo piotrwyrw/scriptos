@@ -6,6 +6,11 @@ spring:
     username: postgres
     password: postgres
     url: jdbc:postgresql://localhost:5432/scriptos
+
+springdoc:
+  swagger-ui:
+    path: /api-docs
+
 server:
   port: 8080
 scriptos:

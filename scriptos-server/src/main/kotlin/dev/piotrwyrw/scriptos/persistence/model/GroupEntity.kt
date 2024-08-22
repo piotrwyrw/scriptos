@@ -14,7 +14,10 @@ class GroupEntity {
     @Column(name = "name")
     lateinit var name: String
 
+    @Column(name = "admin_user")
+    lateinit var adminUser: UUID
+
     @ManyToMany(mappedBy = "groups")
-    lateinit var members: MutableSet<UserEntity>
+    var members: MutableSet<UserEntity> = mutableSetOf()
 
 }

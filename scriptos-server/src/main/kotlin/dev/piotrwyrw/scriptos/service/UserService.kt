@@ -1,12 +1,17 @@
 package dev.piotrwyrw.scriptos.service
 
 import dev.piotrwyrw.scriptos.api.model.RegisterRequest
+import dev.piotrwyrw.scriptos.config.AdminUserConfig
 import dev.piotrwyrw.scriptos.exception.ScriptosException
 import dev.piotrwyrw.scriptos.persistence.model.UserEntity
 import dev.piotrwyrw.scriptos.persistence.repository.UserRepository
 import dev.piotrwyrw.scriptos.util.UtilService
 import dev.piotrwyrw.scriptos.util.isValidPassword
 import dev.piotrwyrw.scriptos.util.isValidUsername
+import jakarta.annotation.PostConstruct
+import org.slf4j.LoggerFactory
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.context.annotation.Lazy
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 import java.time.Instant
@@ -16,8 +21,29 @@ import kotlin.jvm.optionals.getOrNull
 @Service
 class UserService(
     val userRepository: UserRepository,
-    val utilService: UtilService
+    val utilService: UtilService,
+    val adminUserConfig: AdminUserConfig
 ) {
+
+    @Lazy
+    @Autowired
+    lateinit var groupService: GroupService
+
+    val logger = LoggerFactory.getLogger(javaClass)
+
+    @PostConstruct
+    fun ensureAdminUserExists() {
+        if (byUsername(adminUserConfig.username) == null) {
+            createUser(adminUserConfig.username, adminUserConfig.password)
+            logger.info("The admin user \"${adminUserConfig.username}\" was created with password \"${adminUserConfig.password}\"")
+            return
+        }
+
+        logger.info("Admin user: ${adminUserConfig.username}")
+        logger.info("Admin password: ${adminUserConfig.password}")
+    }
+
+    fun systemAdministrator(): UserEntity = byUsername(adminUserConfig.username)!!
 
     fun findUser(id: UUID): UserEntity? = userRepository.findById(id).getOrNull()
 

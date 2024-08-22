@@ -4,8 +4,10 @@ import dev.piotrwyrw.scriptos.api.model.AddUserToGroupRequest
 import dev.piotrwyrw.scriptos.config.GroupsConfig
 import dev.piotrwyrw.scriptos.exception.ScriptosException
 import dev.piotrwyrw.scriptos.persistence.model.GroupEntity
+import dev.piotrwyrw.scriptos.persistence.model.UserEntity
 import dev.piotrwyrw.scriptos.persistence.repository.GroupRepository
 import dev.piotrwyrw.scriptos.persistence.repository.UserRepository
+import dev.piotrwyrw.scriptos.util.currentUser
 import dev.piotrwyrw.scriptos.util.isValidGroupName
 import jakarta.annotation.PostConstruct
 import org.slf4j.LoggerFactory
@@ -26,14 +28,14 @@ class GroupService(
 
     @PostConstruct
     fun ensureCommonGroupExists() {
-        val commonName = groupsConfig.commonGroupName
+        val commonName = commonGroupName()
         groupByName(commonName) ?: run {
-            createGroup(commonName)
+            createGroup(commonName, userService.systemAdministrator())
             logger.info("Created the common group \"${commonName}\"")
         }
     }
 
-    fun createGroup(name: String): UUID {
+    fun createGroup(name: String, admin: UserEntity): UUID {
         if (!name.isValidGroupName())
             throw ScriptosException(
                 "The group name does not match the required pattern",
@@ -45,11 +47,15 @@ class GroupService(
 
         val group = GroupEntity()
         group.name = name
+        group.adminUser = admin.id
         groupRepository.save(group)
+
+        logger.info("Created group \"${name}\" with admin user \"${admin.username}\"")
+
         return group.id
     }
 
-    fun addUserToGroup(username: String, groupName: String) {
+    fun addUserToGroup(username: String, groupName: String, checkPermissions: Boolean) {
         val group = groupByName(groupName) ?: throw ScriptosException(
             "The group '${groupName}' does not exist",
             HttpStatus.NOT_FOUND
@@ -59,6 +65,9 @@ class GroupService(
             "The user '${username}' does not exist",
             HttpStatus.NOT_FOUND
         )
+
+        if (checkPermissions && (group.adminUser != currentUser()?.id && currentUser()?.id != userService.systemAdministrator().id))
+            throw ScriptosException("You do not have permissions to do this.", HttpStatus.FORBIDDEN)
 
         if (group.members.contains(user))
             throw ScriptosException("The user '${username}' is already in group '${groupName}'", HttpStatus.CONFLICT)
@@ -71,10 +80,17 @@ class GroupService(
         logger.info("User \"${username}\" added to group \"${groupName}\"")
     }
 
+    fun addUserToGroup(username: String, groupName: String) =
+        addUserToGroup(username, groupName, checkPermissions = true)
+
+    fun addUserToCommonGroup(username: String) = addUserToGroup(username, commonGroupName(), checkPermissions = false)
+
     fun addUserToGroup(request: AddUserToGroupRequest) = addUserToGroup(request.username, request.groupName)
 
     fun groupByName(name: String) = groupRepository.findByName(name).getOrNull()
 
     fun groupNameTaken(name: String) = groupByName(name) != null
+
+    fun commonGroupName() = groupsConfig.commonGroupName
 
 }

@@ -28,6 +28,6 @@ class UserEntity {
         joinColumns = [JoinColumn(name = "user_id")],
         inverseJoinColumns = [JoinColumn(name = "group_id")]
     )
-    lateinit var groups: MutableSet<GroupEntity>
+    var groups: MutableSet<GroupEntity> = mutableSetOf()
 
 }

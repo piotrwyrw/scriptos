@@ -21,3 +21,6 @@ scriptos:
     common-group-name: common
   storage:
     directory: scriptos-data
+  admin:
+    username: admin
+    password: piotr2005

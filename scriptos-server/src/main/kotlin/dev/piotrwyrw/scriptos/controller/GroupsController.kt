@@ -5,6 +5,7 @@ import dev.piotrwyrw.scriptos.api.model.AddUserToGroupRequest
 import dev.piotrwyrw.scriptos.api.model.CreateGroupRequest
 import dev.piotrwyrw.scriptos.api.model.GroupIdResponse
 import dev.piotrwyrw.scriptos.service.GroupService
+import dev.piotrwyrw.scriptos.util.currentUser
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RestController
 
@@ -14,7 +15,7 @@ class GroupsController(
 ) : GroupsApi {
 
     override fun createGroup(createGroupRequest: CreateGroupRequest): ResponseEntity<GroupIdResponse> {
-        return ResponseEntity.ok(GroupIdResponse(groupService.createGroup(createGroupRequest.name)))
+        return ResponseEntity.ok(GroupIdResponse(groupService.createGroup(createGroupRequest.name, currentUser()!!)))
     }
 
     override fun addUserToGroup(addUserToGroupRequest: AddUserToGroupRequest): ResponseEntity<Unit> {

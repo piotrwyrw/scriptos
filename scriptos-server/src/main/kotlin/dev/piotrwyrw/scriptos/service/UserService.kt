@@ -25,24 +25,6 @@ class UserService(
     val adminUserConfig: AdminUserConfig
 ) {
 
-    @Lazy
-    @Autowired
-    lateinit var groupService: GroupService
-
-    val logger = LoggerFactory.getLogger(javaClass)
-
-    @PostConstruct
-    fun ensureAdminUserExists() {
-        if (byUsername(adminUserConfig.username) == null) {
-            createUser(adminUserConfig.username, adminUserConfig.password)
-            logger.info("The admin user \"${adminUserConfig.username}\" was created with password \"${adminUserConfig.password}\"")
-            return
-        }
-
-        logger.info("Admin user: ${adminUserConfig.username}")
-        logger.info("Admin password: ${adminUserConfig.password}")
-    }
-
     fun systemAdministrator(): UserEntity = byUsername(adminUserConfig.username)!!
 
     fun findUser(id: UUID): UserEntity? = userRepository.findById(id).getOrNull()
@@ -51,7 +33,7 @@ class UserService(
 
     fun usernameTaken(username: String): Boolean = byUsername(username) != null
 
-    private fun createUser(username: String, password: String): UserEntity {
+    fun createUser(username: String, password: String): UserEntity {
         val entity = UserEntity()
         entity.username = username
         entity.passwordHash = utilService.encodePassword(password)

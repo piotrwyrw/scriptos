@@ -26,7 +26,8 @@ class UserEntity {
     @JoinTable(
         name = "group_membership",
         joinColumns = [JoinColumn(name = "user_id")],
-        inverseJoinColumns = [JoinColumn(name = "group_id")]
+        inverseJoinColumns = [JoinColumn(name = "group_id")],
+
     )
     var groups: MutableSet<GroupEntity> = mutableSetOf()
 

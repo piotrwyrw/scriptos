@@ -60,7 +60,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/groupIdResponse"
 
-  /group/adduser:
+  /group/user:
     post:
       operationId: addUserToGroup
       summary: Add a user to an existing Scriptos group
@@ -72,6 +72,36 @@ paths:
           application/json:
             schema:
               $ref: "#/components/schemas/addUserToGroupRequest"
+      responses:
+        200:
+          description: OK
+    delete:
+      operationId: deleteUserFromGroup
+      summary: Delete a user from a group they are currently in
+      tags:
+        - Groups
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/removeUserFromGroupRequest"
+      responses:
+        200:
+          description: OK
+
+  /group/leave:
+    post:
+      operationId: leaveGroup
+      summary: Leave a group as the logged-in user
+      tags:
+        - Groups
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/leaveGroupRequest"
       responses:
         200:
           description: OK
@@ -139,5 +169,24 @@ components:
       properties:
         username:
           type: string
+        groupName:
+          type: string
+
+    removeUserFromGroupRequest:
+      type: object
+      required:
+        - username
+        - groupName
+      properties:
+        username:
+          type: string
+        groupName:
+          type: string
+
+    leaveGroupRequest:
+      type: object
+      required:
+        - groupName
+      properties:
         groupName:
           type: string

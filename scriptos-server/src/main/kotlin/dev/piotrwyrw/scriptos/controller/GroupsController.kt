@@ -1,9 +1,7 @@
 package dev.piotrwyrw.scriptos.controller
 
 import dev.piotrwyrw.scriptos.api.GroupsApi
-import dev.piotrwyrw.scriptos.api.model.AddUserToGroupRequest
-import dev.piotrwyrw.scriptos.api.model.CreateGroupRequest
-import dev.piotrwyrw.scriptos.api.model.GroupIdResponse
+import dev.piotrwyrw.scriptos.api.model.*
 import dev.piotrwyrw.scriptos.service.GroupService
 import dev.piotrwyrw.scriptos.util.currentUser
 import org.springframework.http.ResponseEntity
@@ -22,4 +20,15 @@ class GroupsController(
         groupService.addUserToGroup(addUserToGroupRequest)
         return ResponseEntity.ok().build()
     }
+
+    override fun deleteUserFromGroup(removeUserFromGroupRequest: RemoveUserFromGroupRequest): ResponseEntity<Unit> {
+        groupService.removeUserFromGroup(removeUserFromGroupRequest)
+        return ResponseEntity.ok().build()
+    }
+
+    override fun leaveGroup(leaveGroupRequest: LeaveGroupRequest): ResponseEntity<Unit> {
+        groupService.leaveGroup(leaveGroupRequest.groupName)
+        return ResponseEntity.ok().build()
+    }
+
 }

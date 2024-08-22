@@ -48,16 +48,18 @@ class GroupService(
         return group.id
     }
 
-    fun addUserToGroup(username: String, groupName: String, checkPermissions: Boolean) {
-        val group = groupByName(groupName) ?: throw ScriptosException(
+    private fun resolveGroupAndUser(username: String, groupName: String): Pair<GroupEntity, UserEntity> {
+        return (groupByName(groupName) ?: throw ScriptosException(
             "The group '${groupName}' does not exist",
             HttpStatus.NOT_FOUND
-        )
-
-        val user = userService.byUsername(username) ?: throw ScriptosException(
+        )) to (userService.byUsername(username) ?: throw ScriptosException(
             "The user '${username}' does not exist",
             HttpStatus.NOT_FOUND
-        )
+        ))
+    }
+
+    fun addUserToGroup(username: String, groupName: String, checkPermissions: Boolean) {
+        val (group, user) = resolveGroupAndUser(username, groupName)
 
         if (checkPermissions && (group.adminUser != currentUser()?.id && currentUser()?.id != userService.systemAdministrator().id))
             throw ScriptosException("You do not have permissions to do this.", HttpStatus.FORBIDDEN)
@@ -74,17 +76,8 @@ class GroupService(
         logger.info("User \"${username}\" added to group \"${groupName}\"")
     }
 
-    // TODO Make the code less duplicated
     fun removeUserFromGroup(username: String, groupName: String, checkPermissions: Boolean) {
-        val group = groupByName(groupName) ?: throw ScriptosException(
-            "The group '${groupName}' does not exist",
-            HttpStatus.NOT_FOUND
-        )
-
-        val user = userService.byUsername(username) ?: throw ScriptosException(
-            "The user '${username}' does not exist",
-            HttpStatus.NOT_FOUND
-        )
+        val (group, user) = resolveGroupAndUser(username, groupName)
 
         if (checkPermissions && (group.adminUser != currentUser()?.id && currentUser()?.id != userService.systemAdministrator().id && currentUser()?.id != user.id))
             throw ScriptosException("You do not have permissions to do this.", HttpStatus.FORBIDDEN)

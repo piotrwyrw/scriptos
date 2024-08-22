@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController
 class UserController(
     val authenticationService: AuthenticationService,
     val userService: UserService,
-    private val groupService: GroupService
+    val groupService: GroupService
 ) : UserApi {
 
     override fun userLogin(loginRequest: LoginRequest): ResponseEntity<TokenResponse> {

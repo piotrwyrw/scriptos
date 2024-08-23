@@ -9,7 +9,8 @@ import org.springframework.stereotype.Component
 @ConfigurationProperties(prefix = "scriptos.auth")
 class AuthConfiguration(
     var unusedTokenExpiration: Long = 2880,
-    var hardTokenExpiration: Long = 2800 * 2
+    var hardTokenExpiration: Long = 2800 * 2,
+    var authRequestDelay: Long = 1000
 ) {
 
     val logger = LoggerFactory.getLogger(javaClass)

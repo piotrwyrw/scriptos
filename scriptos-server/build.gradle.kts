@@ -53,7 +53,7 @@ openApiGenerate {
     apiNameSuffix = "Api"
     generateApiDocumentation = true
     generateModelDocumentation = true
-    inputSpec = "openapi-generator/openapi-spec.yaml"
+    inputSpec = "../openapi-generator/openapi-spec.yaml"
     validateSpec = true
     configOptions.put("documentationProvider", "springdoc")
     configOptions.put("useTags", "true")

@@ -1,16 +1,22 @@
 <div class="justify-content-center mt-3">
-  <form [formGroup]="userData">
-    <p-floatLabel>
-      <input type="text" pInputText id="username" class="w-full" formControlName="username">
-      <label for="username">Username</label>
-    </p-floatLabel>
-    <div class="mt-5"></div>
-    <p-floatLabel>
-      <input type="password" pPassword id="password" class="w-full" formControlName="password">
-      <label for="password">Password</label>
-    </p-floatLabel>
-  </form>
-  <div class="mt-5 w-full flex justify-content-end">
-    <p-button label="Login"></p-button>
-  </div>
+  @if (loading()) {
+    <div class="w-full flex justify-content-center align-items-center auth-spinner">
+      <p-progressSpinner ariaLabel="loading"></p-progressSpinner>
+    </div>
+  } @else {
+    <form [formGroup]="loginData" (ngSubmit)="login()">
+      <p-floatLabel>
+        <input type="text" pInputText id="username" class="w-full" formControlName="username">
+        <label for="username">Username</label>
+      </p-floatLabel>
+      <div class="mt-5"></div>
+      <p-floatLabel>
+        <input type="password" pPassword id="password" class="w-full" formControlName="password">
+        <label for="password">Password</label>
+      </p-floatLabel>
+      <div class="mt-5 w-full flex justify-content-end">
+        <p-button label="Login" type="submit" [disabled]="loginData.invalid"></p-button>
+      </div>
+    </form>
+  }
 </div>

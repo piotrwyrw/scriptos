@@ -3,6 +3,10 @@ info:
   title: Scriptos API
   description: The API Specification for the Scriptos Backend
   version: 1.0.0
+servers:
+  - url: http://localhost:8080
+    description: Local development
+
 paths:
   /register:
     post:
@@ -21,7 +25,7 @@ paths:
           description: OK
 
   /login:
-    get:
+    post:
       operationId: userLogin
       summary: Login as an existing Scriptos user
       tags:

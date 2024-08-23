@@ -1,10 +1,11 @@
-import {Component} from '@angular/core';
+import {Component, signal} from '@angular/core';
 import {Button} from "primeng/button";
 import {InputTextModule} from "primeng/inputtext";
 import {PasswordModule} from "primeng/password";
 import {FloatLabelModule} from "primeng/floatlabel";
 import {ToastModule} from "primeng/toast";
-import {FormControl, FormGroup, ReactiveFormsModule} from "@angular/forms";
+import {FormControl, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
+import {ProgressSpinnerModule} from "primeng/progressspinner";
 
 @Component({
   selector: 'app-register',
@@ -15,16 +16,32 @@ import {FormControl, FormGroup, ReactiveFormsModule} from "@angular/forms";
     PasswordModule,
     FloatLabelModule,
     ToastModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    ProgressSpinnerModule
   ],
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss'
 })
 export class RegisterComponent {
 
-  userData = new FormGroup({
-    username: new FormControl(''),
-    password: new FormControl('')
+  loading = signal(false)
+
+  registrationData = new FormGroup({
+    username: new FormControl('', [
+      Validators.required,
+      Validators.minLength(3),
+      Validators.pattern("[a-zA-Z0-9]+")
+    ]),
+    password: new FormControl('', [
+      Validators.required,
+      Validators.minLength(8)
+    ])
   })
+
+  
+
+  register() {
+
+  }
 
 }

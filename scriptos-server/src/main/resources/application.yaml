@@ -17,6 +17,7 @@ scriptos:
   auth:
     unused-token-expiration: 2800
     hard-token-expiration: 5600
+    auth-request-delay: 1000
   groups:
     common-group-name: common
   storage:

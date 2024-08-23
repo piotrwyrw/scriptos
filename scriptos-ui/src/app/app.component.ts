@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import {RouterOutlet} from '@angular/router';
 import {PrimeNGConfig} from "primeng/api";
 
 @Component({
@@ -10,7 +10,6 @@ import {PrimeNGConfig} from "primeng/api";
   styleUrl: './app.component.scss'
 })
 export class AppComponent implements OnInit {
-  title = 'scriptos-ui';
 
   constructor(private primeNgConfig: PrimeNGConfig) {
   }

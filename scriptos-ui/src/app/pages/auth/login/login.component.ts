@@ -9,6 +9,7 @@ import {FormControl, FormGroup, ReactiveFormsModule, Validators} from "@angular/
 import {ProgressSpinnerModule} from "primeng/progressspinner";
 import {AuthenticationService} from "../../../service/authentication.service";
 import {NotificationService} from "../../../service/notification.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-login',
@@ -35,7 +36,7 @@ export class LoginComponent {
     password: new FormControl("", Validators.required)
   })
 
-  constructor(private authenticationService: AuthenticationService, private notificationService: NotificationService) {
+  constructor(private authenticationService: AuthenticationService, private notificationService: NotificationService, private router: Router) {
   }
 
   resetForm() {
@@ -46,13 +47,16 @@ export class LoginComponent {
     this.loading.set(true)
     this.authenticationService.logIn(this.loginData.controls['username'].value!, this.loginData.controls['password'].value!)
       .subscribe((error) => {
-        this.loading.set(false)
         if (!error) {
           this.notificationService.success("Logged In", "The log in was successful")
+          setTimeout(() => {
+            this.router.navigateByUrl('dashboard')
+          }, 500)
         } else {
           this.notificationService.displayResponse(error)
+          this.loading.set(false)
+          this.resetForm()
         }
-        this.resetForm()
       })
   }
 

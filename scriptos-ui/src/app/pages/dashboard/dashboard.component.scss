@@ -1,0 +1,21 @@
+.sidebar {
+  top: 0;
+  left: 0;
+  height: 100vh;
+  position: fixed;
+}
+
+.sidebar-entry {
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  width: 100%;
+  max-width: 150px;
+  transition: transform ease-in-out .2s;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.sidebar-entry:hover {
+  transform: translateX(15px);
+}

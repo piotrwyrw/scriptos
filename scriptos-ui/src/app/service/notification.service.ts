@@ -35,7 +35,7 @@ export class NotificationService {
   }
 
   displayResponse(errorResponse: ErrorResponse) {
-    this.error("Error", errorResponse.message ?? "An unknown error occurred")
+    this.error("Error", errorResponse.message ?? "No error message provided")
   }
 
 }

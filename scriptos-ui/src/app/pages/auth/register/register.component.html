@@ -15,7 +15,7 @@
         <label for="password">Password</label>
       </p-floatLabel>
       <div class="mt-5 w-full flex justify-content-end">
-        <p-button label="Register" type="submit"></p-button>
+        <p-button label="Register" type="submit" [disabled]="registrationData.invalid"></p-button>
       </div>
     </form>
   }

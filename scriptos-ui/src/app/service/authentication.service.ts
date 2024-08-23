@@ -26,4 +26,17 @@ export class AuthenticationService {
         )
     }
 
+    register(username: string, password: string): Observable<ErrorResponse | undefined> {
+        return this.userService.userRegister({
+            username, password
+        }).pipe(
+            map(resp => {
+                return undefined
+            }),
+            catchError(errorResp => {
+                return of(errorResp.error)
+            })
+        )
+    }
+
 }

@@ -38,6 +38,10 @@ export class LoginComponent {
   constructor(private authenticationService: AuthenticationService, private notificationService: NotificationService) {
   }
 
+  resetForm() {
+    this.loginData.reset()
+  }
+
   login() {
     this.loading.set(true)
     this.authenticationService.logIn(this.loginData.controls['username'].value!, this.loginData.controls['password'].value!)
@@ -48,6 +52,7 @@ export class LoginComponent {
         } else {
           this.notificationService.displayResponse(error)
         }
+        this.resetForm()
       })
   }
 

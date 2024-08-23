@@ -1,6 +1,7 @@
 package dev.piotrwyrw.scriptos.security.config
 
 import dev.piotrwyrw.scriptos.config.AuthConfiguration
+import dev.piotrwyrw.scriptos.security.filter.CorsFilter
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.core.Ordered.HIGHEST_PRECEDENCE
@@ -11,9 +12,9 @@ import org.springframework.security.web.SecurityFilterChain
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
 
 @Configuration
-class PublicFilterChainConfig (
+class PublicFilterChainConfig(
     val authConfiguration: AuthConfiguration
-){
+) {
 
     @Bean
     @Order(HIGHEST_PRECEDENCE)
@@ -25,7 +26,8 @@ class PublicFilterChainConfig (
             authorizeRequests {
                 authorize(anyRequest, permitAll)
             }
-            addFilterBefore<UsernamePasswordAuthenticationFilter>(RateLimitFilter(authConfiguration.authRequestDelay))
+            addFilterBefore<UsernamePasswordAuthenticationFilter>(CorsFilter())
+            addFilterAfter<CorsFilter>(RateLimitFilter(authConfiguration.authRequestDelay))
         }
         return http.build()
     }

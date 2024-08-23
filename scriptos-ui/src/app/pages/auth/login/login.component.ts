@@ -31,8 +31,8 @@ export class LoginComponent {
   loading = signal(false)
 
   loginData = new FormGroup({
-    username: new FormControl(""),
-    password: new FormControl("")
+    username: new FormControl("", Validators.required),
+    password: new FormControl("", Validators.required)
   })
 
   constructor(private authenticationService: AuthenticationService, private notificationService: NotificationService) {

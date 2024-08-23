@@ -1,5 +1,6 @@
 package dev.piotrwyrw.scriptos.security.config
 
+import dev.piotrwyrw.scriptos.security.filter.CorsFilter
 import dev.piotrwyrw.scriptos.security.filter.TokenAuthenticationFilter
 import dev.piotrwyrw.scriptos.service.AuthenticationService
 import org.springframework.context.annotation.Bean
@@ -26,7 +27,8 @@ class TokenFilterChainConfig(
             authorizeRequests {
                 authorize(anyRequest, permitAll)
             }
-            addFilterBefore<UsernamePasswordAuthenticationFilter>(TokenAuthenticationFilter(authenticationService))
+            addFilterBefore<UsernamePasswordAuthenticationFilter>(CorsFilter())
+            addFilterAfter<CorsFilter>(TokenAuthenticationFilter(authenticationService))
         }
         return http.build()
     }

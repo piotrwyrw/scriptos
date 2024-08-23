@@ -10,8 +10,9 @@
  */
 
 
-export interface CreateGroupRequest { 
+export interface GroupListingResponseInner { 
     name: string;
     description: string;
+    admin: boolean;
 }
 

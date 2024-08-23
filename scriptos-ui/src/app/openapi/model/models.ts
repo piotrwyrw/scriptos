@@ -2,6 +2,7 @@ export * from './addUserToGroupRequest';
 export * from './createGroupRequest';
 export * from './errorResponse';
 export * from './groupIdResponse';
+export * from './groupListingResponseInner';
 export * from './leaveGroupRequest';
 export * from './loginRequest';
 export * from './registerRequest';

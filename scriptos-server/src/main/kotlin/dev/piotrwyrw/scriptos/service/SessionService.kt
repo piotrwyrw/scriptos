@@ -39,22 +39,20 @@ class SessionService(
         sessionRepository.save(session)
     }
 
-    private fun expiryValues(): Pair<Instant, Instant> {
-        val lastAccessed = Instant.now().minus(authConfig.unusedTokenExpiration, ChronoUnit.MINUTES)
-        val hardExpire = Instant.now().minus(authConfig.hardTokenExpiration, ChronoUnit.MINUTES)
-        return lastAccessed to hardExpire
+    private fun lastAccessedExpiration(): Instant {
+        return Instant.now().minus(authConfig.unusedTokenExpiration, ChronoUnit.MINUTES)
     }
 
     fun findSession(token: String): SessionEntity? {
-        val expiry = expiryValues()
-        return sessionRepository.findByToken(token, expiry.first, expiry.second).getOrNull()
+        val expiry = lastAccessedExpiration()
+        return sessionRepository.findByToken(token, expiry).getOrNull()
     }
 
     @Scheduled(fixedRate = 20, timeUnit = TimeUnit.SECONDS)
     fun deleteExpiredSessions() {
-        val expiry = expiryValues()
-        var length = 0
-        sessionRepository.findExpired(expiry.first, expiry.second).let { _it ->
+        val expiry = lastAccessedExpiration()
+        var length: Int
+        sessionRepository.findExpired(expiry).let { _it ->
             length = _it.size
             _it.forEach {
                 sessionRepository.deleteById(it.id)

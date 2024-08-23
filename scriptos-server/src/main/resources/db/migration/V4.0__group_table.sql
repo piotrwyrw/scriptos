@@ -1,10 +1,11 @@
 create table "group"
 (
-    id         uuid primary key not null,
+    id          uuid primary key not null,
 
-    admin_user uuid             not null,
+    admin_user  uuid             not null,
 
-    name       text             not null,
+    name        text             not null,
+    description text             not null,
 
     foreign key (admin_user) references "user" (id)
 );

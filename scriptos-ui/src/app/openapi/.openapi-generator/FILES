@@ -3,6 +3,7 @@ README.md
 api.module.ts
 api/api.ts
 api/groups.service.ts
+api/security.service.ts
 api/user.service.ts
 configuration.ts
 encoder.ts
@@ -12,6 +13,7 @@ model/addUserToGroupRequest.ts
 model/createGroupRequest.ts
 model/errorResponse.ts
 model/groupIdResponse.ts
+model/groupListingResponseInner.ts
 model/leaveGroupRequest.ts
 model/loginRequest.ts
 model/models.ts

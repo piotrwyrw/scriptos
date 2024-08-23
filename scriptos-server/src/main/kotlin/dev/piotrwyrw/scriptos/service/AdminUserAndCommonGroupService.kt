@@ -18,13 +18,8 @@ class AdminUserAndCommonGroupService(
 
     @PostConstruct
     fun ensureAdminUserAndCommonGroupExists() {
-        val adminExists = ensureAdminUserExists()
+        ensureAdminUserExists()
         ensureCommonGroupExists()
-
-        if (adminExists)
-            return
-
-        groupService.addUserToCommonGroup(adminUserConfig.username)
     }
 
     fun ensureAdminUserExists(): Boolean {
@@ -41,8 +36,9 @@ class AdminUserAndCommonGroupService(
 
     fun ensureCommonGroupExists() {
         val commonName = groupService.commonGroupName()
+        val commonDescription = groupService.commonGroupDescription()
         groupService.groupByName(commonName) ?: run {
-            groupService.createGroup(commonName, userService.systemAdministrator())
+            groupService.createGroup(commonName, commonDescription, userService.systemAdministrator(), checkPermissions = false)
             logger.info("Created the common group \"${commonName}\"")
         }
     }

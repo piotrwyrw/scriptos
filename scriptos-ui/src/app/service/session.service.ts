@@ -10,8 +10,9 @@ export class SessionService {
   public get sessionToken(): string | undefined {
     if (!this._token) {
       let lsToken = localStorage.getItem('scriptos-session')
-      if (lsToken)
-        this._token = lsToken
+      if (lsToken) {
+        this.sessionToken = lsToken
+      }
     }
 
     return this._token

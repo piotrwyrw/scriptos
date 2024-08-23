@@ -44,6 +44,18 @@ paths:
               schema:
                 $ref: "#/components/schemas/tokenResponse"
 
+  /secured:
+    get:
+      operationId: securedRoute
+      summary: A sample secured route for testing token validity
+      tags:
+        - Security
+      responses:
+        200:
+          description: OK
+        403:
+          description: Forbidden
+
   /group:
     post:
       operationId: createGroup
@@ -63,6 +75,19 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/groupIdResponse"
+    get:
+      operationId: retrieveGroups
+      summary: Retrieve all groups viewable by the user
+      tags:
+        - Groups
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/groupListingResponse"
+
 
   /group/user:
     post:
@@ -152,8 +177,11 @@ components:
       type: object
       required:
         - name
+        - description
       properties:
         name:
+          type: string
+        description:
           type: string
 
     groupIdResponse:
@@ -194,3 +222,19 @@ components:
       properties:
         groupName:
           type: string
+
+    groupListingResponse:
+      type: array
+      items:
+        type: object
+        required:
+          - name
+          - description
+          - admin
+        properties:
+          name:
+            type: string
+          description:
+            type: string
+          admin:
+            type: boolean

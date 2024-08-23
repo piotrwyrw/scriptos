@@ -14,6 +14,9 @@ class GroupEntity {
     @Column(name = "name")
     lateinit var name: String
 
+    @Column(name = "description")
+    lateinit var description: String
+
     @Column(name = "admin_user")
     lateinit var adminUser: UUID
 

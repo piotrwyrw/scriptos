@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component
 
 @Component
 @ConfigurationProperties(prefix = "scriptos.groups")
-class GroupsConfig {
-    var commonGroupName: String = "common"
-}
+class GroupsConfig (
+    var commonGroupName: String = "common",
+    var commonGroupDescription: String = "The default group"
+)

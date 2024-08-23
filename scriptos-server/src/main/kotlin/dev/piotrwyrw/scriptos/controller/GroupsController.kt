@@ -13,7 +13,15 @@ class GroupsController(
 ) : GroupsApi {
 
     override fun createGroup(createGroupRequest: CreateGroupRequest): ResponseEntity<GroupIdResponse> {
-        return ResponseEntity.ok(GroupIdResponse(groupService.createGroup(createGroupRequest.name, currentUser()!!)))
+        return ResponseEntity.ok(
+            GroupIdResponse(
+                groupService.createGroup(
+                    createGroupRequest.name,
+                    createGroupRequest.description,
+                    currentUser()!!
+                )
+            )
+        )
     }
 
     override fun addUserToGroup(addUserToGroupRequest: AddUserToGroupRequest): ResponseEntity<Unit> {
@@ -31,4 +39,10 @@ class GroupsController(
         return ResponseEntity.ok().build()
     }
 
+    override fun retrieveGroups(): ResponseEntity<List<GroupListingResponseInner>> {
+        val thisUser = currentUser()!!.id
+        return ResponseEntity.ok(groupService.retrieveViewableGroups().map {
+            GroupListingResponseInner(it.name, it.description, it.adminUser == thisUser)
+        })
+    }
 }

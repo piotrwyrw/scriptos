@@ -28,7 +28,7 @@ class GroupService(
 
     val logger = LoggerFactory.getLogger(javaClass)
 
-    fun createGroup(name: String, admin: UserEntity): UUID {
+    fun createGroup(name: String, description: String, admin: UserEntity, checkPermissions: Boolean = false): UUID {
         if (!name.isValidGroupName())
             throw ScriptosException(
                 "The group name does not match the required pattern",
@@ -40,10 +40,13 @@ class GroupService(
 
         val group = GroupEntity()
         group.name = name
+        group.description = description
         group.adminUser = admin.id
         groupRepository.save(group)
 
         logger.info("Created group \"${name}\" with admin user \"${admin.username}\"")
+
+        addUserToGroup(admin.username, name, checkPermissions)
 
         return group.id
     }
@@ -100,6 +103,14 @@ class GroupService(
         logger.info("User \"${username}\" removed from group \"${groupName}\"")
     }
 
+    fun retrieveViewableGroups(): List<GroupEntity> {
+        val currUser = currentUser()!!
+        return if (userService.systemAdministrator().id != currUser.id)
+            currUser.groups.toList()
+        else
+            groupRepository.findAll().toList()
+    }
+
     fun leaveGroup(groupName: String) =
         removeUserFromGroup(currentUser()!!.username, groupName, checkPermissions = true)
 
@@ -118,5 +129,7 @@ class GroupService(
     fun groupNameTaken(name: String) = groupByName(name) != null
 
     fun commonGroupName() = groupsConfig.commonGroupName
+
+    fun commonGroupDescription() = groupsConfig.commonGroupDescription
 
 }

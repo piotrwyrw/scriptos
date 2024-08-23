@@ -9,7 +9,6 @@ import org.springframework.stereotype.Component
 @ConfigurationProperties(prefix = "scriptos.auth")
 class AuthConfiguration(
     var unusedTokenExpiration: Long = 2880,
-    var hardTokenExpiration: Long = 2800 * 2,
     var authRequestDelay: Long = 1000
 ) {
 
@@ -17,7 +16,7 @@ class AuthConfiguration(
 
     @PostConstruct
     fun debugLogConfigValues() {
-        logger.info("Unused tokens set to expire after $unusedTokenExpiration minutes, hard expiration after $hardTokenExpiration minutes")
+        logger.info("Unused tokens set to expire after $unusedTokenExpiration minutes.")
     }
 
 }

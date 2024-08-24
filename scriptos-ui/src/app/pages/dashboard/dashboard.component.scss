@@ -1,21 +1,20 @@
 .sidebar {
-  top: 0;
-  left: 0;
   height: 100vh;
-  position: fixed;
 }
 
-.sidebar-entry {
-  display: flex;
-  align-items: center;
-  justify-content: start;
-  width: 100%;
-  max-width: 150px;
-  transition: transform ease-in-out .2s;
-  padding: 10px;
-  cursor: pointer;
+.sidebar-element {
+  transition: background-color .2s;
 }
 
-.sidebar-entry:hover {
-  transform: translateX(15px);
+.sidebar-element-selected {
+  background-color: var(--primary-color);
+  color: var(--surface-50) !important;
+}
+
+.sidebar-element:hover {
+  background-color: var(--surface-100);
+}
+
+.sidebar-element-selected:hover {
+  background-color: var(--primary-600);
 }

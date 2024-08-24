@@ -1,25 +1,26 @@
-<div class="grid grid-nogutter">
-  <div class="col-12 xl:col-2 bg-primary-900 sidebar shadow-7">
-    <div class="w-full text-center mt-5 mb-6">
-      <span>Welcome</span>
-    </div>
-    <div class="p-3 flex flex-column align-items-center align-items-start">
-      <div class="p-1 sidebar-entry">
-        <i class="pi pi-home mr-3"></i>
-        Overview
-      </div>
-      <div class="p-1 mt-3 sidebar-entry">
-        <i class="pi pi-list mr-3"></i>
-        Groups
-      </div>
-      <div class="p-1 mt-3 sidebar-entry">
-        <i class="pi pi-user mr-3"></i>
-        Users
-      </div>
-      <div class="p-1 mt-3 sidebar-entry">
-        <i class="pi pi-bolt mr-3"></i>
-        Administration
+<div class="grid grid-nogutter text-500">
+  <div class="col-12 xl:col-2 surface-50 shadow-7 select-none xl:h-screen xl:top-0 xl:sticky">
+    <div class="flex flex-column flex-grow-0 w-full h-full p-3">
+      <ul class="list-none p-0 m-0">
+        @for (menuEntry of menu; track menuEntry.label) {
+          @if (menuEntry.shown) {
+            <li>
+              <a pRipple [routerLink]="menuEntry.link"
+                 class="flex align-items-center no-underline cursor-pointer p-3 border-round text-700 sidebar-element {{menuEntry.label.toLowerCase() == selectedEntry.toLowerCase() ? 'sidebar-element-selected' : ''}}"
+                 (click)="select(menuEntry.label)">
+                <i class="{{menuEntry.iconClass}} mr-2"></i>
+                <span class="font-medium">{{ menuEntry.label }}</span>
+              </a>
+            </li>
+          }
+        }
+      </ul>
+      <div class="h-full w-full flex justify-content-end flex-column">
+        <p-button severity="danger" (click)="sessionService.dropSession()" outlined>Log out</p-button>
       </div>
     </div>
+  </div>
+  <div class="col-12 xl:col-10">
+    <router-outlet></router-outlet>
   </div>
 </div>

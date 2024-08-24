@@ -1,0 +1,25 @@
+.spinner-container {
+  height: 100vh;
+}
+
+.group-box {
+  transition: all .2s ease-in-out;
+  min-width: 300px;
+  user-select: none;
+  border: 1px solid transparent;
+}
+
+.group-box:hover {
+  cursor: pointer;
+  background-color: var(--primary-500) !important;
+  color: var(--surface-50);
+}
+
+.selected-group {
+  border: 1px solid var(--primary-color);
+  transform: scale(1.05);
+}
+
+.new-group-dialog {
+  width: 50vw !important;
+}

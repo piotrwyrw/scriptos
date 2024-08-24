@@ -28,6 +28,11 @@ class GroupService(
 
     val logger = LoggerFactory.getLogger(javaClass)
 
+    private fun userDoesNotExistsException(username: String) = ScriptosException(
+        "The user '${username}' does not exist",
+        HttpStatus.NOT_FOUND
+    )
+
     fun createGroup(name: String, description: String, admin: UserEntity, checkPermissions: Boolean = false): UUID {
         if (!name.isValidGroupName())
             throw ScriptosException(
@@ -55,10 +60,7 @@ class GroupService(
         return (groupByName(groupName) ?: throw ScriptosException(
             "The group '${groupName}' does not exist",
             HttpStatus.NOT_FOUND
-        )) to (userService.byUsername(username) ?: throw ScriptosException(
-            "The user '${username}' does not exist",
-            HttpStatus.NOT_FOUND
-        ))
+        )) to (userService.byUsername(username) ?: throw userDoesNotExistsException(username))
     }
 
     fun addUserToGroup(username: String, groupName: String, checkPermissions: Boolean) {
@@ -109,6 +111,16 @@ class GroupService(
             currUser.groups.toList()
         else
             groupRepository.findAll().toList()
+    }
+
+    fun handleNewUser(username: String) {
+        addUserToCommonGroup(username)
+        createGroup(
+            username,
+            "Personal document storage",
+            userService.byUsername(username) ?: throw userDoesNotExistsException(username),
+            false
+        )
     }
 
     fun leaveGroup(groupName: String) =

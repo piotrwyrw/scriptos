@@ -2,6 +2,7 @@ package dev.piotrwyrw.scriptos.security.config
 
 import dev.piotrwyrw.scriptos.config.AuthConfiguration
 import dev.piotrwyrw.scriptos.security.filter.CorsFilter
+import dev.piotrwyrw.scriptos.security.filter.RateLimitFilter
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.core.Ordered.HIGHEST_PRECEDENCE

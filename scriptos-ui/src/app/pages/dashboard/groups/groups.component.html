@@ -1,0 +1,37 @@
+<p-dialog header="New Group" [modal]="true" [(visible)]="newGroupDialogVisible" (close)="newGroupDialogVisible.set(false)" [style]="{width: '30vw'}">
+  <form [formGroup]="newGroupForm" (ngSubmit)="commitNewGroupRequest()">
+    <div class="flex flex-column justify-content-evenly mb-4">
+      <input pInputText id="name" placeholder="Group Name" autocomplete="off" class="mb-3" formControlName="name"/>
+      <input pInputText id="description" placeholder="Description" autocomplete="off" formControlName="description"/>
+    </div>
+    <div class="flex justify-content-end gap-3">
+      <p-button label="Cancel" severity="danger" (click)="newGroupDialogVisible.set(false)" />
+      <p-button label="Save" type="submit" severity="success" [disabled]="newGroupForm.invalid"/>
+    </div>
+  </form>
+</p-dialog>
+
+<div *ngIf="groupService.loadingGroups()" class="flex align-items-center justify-content-center spinner-container">
+  <p-progressSpinner></p-progressSpinner>
+</div>
+
+<div class="p-5">
+  <div *ngIf="!groupService.loadingGroups()" class="w-full">
+    <p-button severity="success" icon="pi pi-plus" (click)="newGroup()" outlined></p-button>
+  </div>
+
+  <div *ngIf="!groupService.loadingGroups()"
+       class="flex justify-content-start align-items-start groups-container mt-5 gap-5">
+    @for (group of groupService.groups; track group) {
+      <div pRipple
+           class="surface-card p-3 border-round flex flex-column group-box shadow-5 {{ groupService.selectedGroup() == group.name ? 'selected-group' : '' }}"
+           (click)="groupService.selectGroup(group.name)">
+        <div class="flex justify-content-between align-items-center">
+          <span class="font-bold">{{ group.name }}</span>
+          <p-chip label="Admin" icon="pi pi-bolt"></p-chip>
+        </div>
+        <span class="font-light mt-2">{{ group.description }}</span>
+      </div>
+    }
+  </div>
+</div>

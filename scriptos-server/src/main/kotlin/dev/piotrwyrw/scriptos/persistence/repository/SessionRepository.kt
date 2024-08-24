@@ -10,10 +10,12 @@ import java.util.*
 @Repository
 interface SessionRepository : JpaRepository<SessionEntity, UUID> {
 
-    @Query("select e from SessionEntity e where e.token = :token and e.accessedAt >= :lastAccessed")
-    fun findByToken(token: String, lastAccessed: Instant): Optional<SessionEntity>
+    @Query("select e from SessionEntity e where e.token = :token and e.accessedAt >= :lastAccessed and not e.flagged")
+    fun findByTokenWithExpiration(token: String, lastAccessed: Instant): Optional<SessionEntity>
 
-    @Query("select e from SessionEntity e where e.accessedAt < :lastAccessed")
+    @Query("select e from SessionEntity e where e.accessedAt < :lastAccessed or e.flagged")
     fun findExpired(lastAccessed: Instant): List<SessionEntity>
+
+    fun findByToken(token: String): Optional<SessionEntity>
 
 }

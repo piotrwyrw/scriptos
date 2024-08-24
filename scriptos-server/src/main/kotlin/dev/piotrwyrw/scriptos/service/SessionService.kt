@@ -5,6 +5,7 @@ import dev.piotrwyrw.scriptos.persistence.model.SessionEntity
 import dev.piotrwyrw.scriptos.persistence.model.UserEntity
 import dev.piotrwyrw.scriptos.persistence.repository.SessionRepository
 import dev.piotrwyrw.scriptos.util.UtilService
+import dev.piotrwyrw.scriptos.util.currentSession
 import jakarta.transaction.Transactional
 import org.slf4j.LoggerFactory
 import org.springframework.scheduling.annotation.Scheduled
@@ -43,9 +44,15 @@ class SessionService(
         return Instant.now().minus(authConfig.unusedTokenExpiration, ChronoUnit.MINUTES)
     }
 
+    fun invalidateSession() {
+        val session = sessionRepository.findByToken(currentSession()!!.token).getOrNull() ?: return
+        session.flagged = true
+        sessionRepository.save(session)
+    }
+
     fun findSession(token: String): SessionEntity? {
         val expiry = lastAccessedExpiration()
-        return sessionRepository.findByToken(token, expiry).getOrNull()
+        return sessionRepository.findByTokenWithExpiration(token, expiry).getOrNull()
     }
 
     @Scheduled(fixedRate = 20, timeUnit = TimeUnit.SECONDS)

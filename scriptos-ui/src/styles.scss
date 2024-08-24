@@ -1,4 +1,4 @@
-@import "primeng/resources/themes/lara-dark-purple/theme.css";
+@import "primeng/resources/themes/arya-orange/theme.css";
 @import "primeng/resources/primeng.min.css";
 @import "primeicons/primeicons.css";
 @import "primeflex/primeflex.css";
@@ -6,4 +6,5 @@
 body {
   margin: 0;
   padding: 0;
+  background-color: var(--surface-ground);
 }

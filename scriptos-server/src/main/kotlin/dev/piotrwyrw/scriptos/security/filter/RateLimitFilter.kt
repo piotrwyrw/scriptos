@@ -1,4 +1,4 @@
-package dev.piotrwyrw.scriptos.security.config
+package dev.piotrwyrw.scriptos.security.filter
 
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest

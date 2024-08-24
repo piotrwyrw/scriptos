@@ -24,4 +24,7 @@ class SessionEntity {
     @Column(name = "last_accessed")
     lateinit var accessedAt: Instant
 
+    @Column(name = "flagged")
+    var flagged: Boolean = false
+
 }

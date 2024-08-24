@@ -48,7 +48,7 @@ export class BackendGroupService {
   }
 
   selectGroup(group: string) {
-    this._selectedGroup = group
+    this._selectedGroup = (this._selectedGroup == group) ? '' : group
     // TODO Load group data?
   }
 

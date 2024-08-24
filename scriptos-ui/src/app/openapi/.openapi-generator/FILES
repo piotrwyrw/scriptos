@@ -20,5 +20,6 @@ model/models.ts
 model/registerRequest.ts
 model/removeUserFromGroupRequest.ts
 model/tokenResponse.ts
+model/userEditRequest.ts
 param.ts
 variables.ts

@@ -54,6 +54,22 @@ paths:
         200:
           description: OK
 
+  /edit:
+    post:
+      operationId: editUser
+      summary: Edit user data
+      tags:
+        - User
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/userEditRequest"
+      responses:
+        200:
+          description: OK
+
   /secured:
     get:
       operationId: securedRoute
@@ -248,3 +264,9 @@ components:
             type: string
           admin:
             type: boolean
+
+    userEditRequest:
+      type: object
+      properties:
+        newPassword:
+          type: string

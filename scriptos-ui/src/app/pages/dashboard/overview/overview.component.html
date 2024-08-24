@@ -1,6 +1,5 @@
-<div class="flex flex-column justify-content-center align-items-center">
-  <h1>This page will eventually</h1>
-  <h2>display some statistics</h2>
-  <h3>about disk usage</h3>
-  <h4>and related parameters</h4>
+<div class="flex flex-column justify-content-center align-items-center h-screen">
+  <div>
+    <p-chart type="line" [data]="diskUsage" [options]="chartOptions" width="600px"></p-chart>
+  </div>
 </div>

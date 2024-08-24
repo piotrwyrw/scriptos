@@ -1,15 +1,19 @@
 package dev.piotrwyrw.scriptos.service
 
 import dev.piotrwyrw.scriptos.api.model.RegisterRequest
+import dev.piotrwyrw.scriptos.api.model.UserEditRequest
 import dev.piotrwyrw.scriptos.config.AdminUserConfig
 import dev.piotrwyrw.scriptos.exception.ScriptosException
 import dev.piotrwyrw.scriptos.persistence.model.UserEntity
 import dev.piotrwyrw.scriptos.persistence.repository.UserRepository
 import dev.piotrwyrw.scriptos.util.UtilService
+import dev.piotrwyrw.scriptos.util.currentUser
 import dev.piotrwyrw.scriptos.util.isValidPassword
 import dev.piotrwyrw.scriptos.util.isValidUsername
 import jakarta.transaction.Transactional
+import org.slf4j.LoggerFactory
 import org.springframework.http.HttpStatus
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Service
 import java.time.Instant
 import java.util.*
@@ -20,8 +24,11 @@ import kotlin.jvm.optionals.getOrNull
 class UserService(
     val userRepository: UserRepository,
     val utilService: UtilService,
-    val adminUserConfig: AdminUserConfig
+    val adminUserConfig: AdminUserConfig,
+    val bCryptPasswordEncoder: BCryptPasswordEncoder
 ) {
+
+    val logger = LoggerFactory.getLogger(javaClass)
 
     fun systemAdministrator(): UserEntity = byUsername(adminUserConfig.username)!!
 
@@ -59,5 +66,23 @@ class UserService(
     }
 
     fun register(request: RegisterRequest) = register(request.username, request.password)
+
+    fun editUser(req: UserEditRequest) {
+        val user = currentUser()!!
+
+        if (req.newPassword != null) {
+            if (!req.newPassword.isValidPassword())
+                throw ScriptosException(
+                    "The password does not match the required format",
+                    HttpStatus.UNPROCESSABLE_ENTITY
+                )
+
+            user.passwordHash = bCryptPasswordEncoder.encode(req.newPassword)
+        }
+
+        logger.info("Updated password of user \"${user.username}\"")
+
+        userRepository.save(user)
+    }
 
 }

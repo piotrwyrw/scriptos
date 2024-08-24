@@ -1,3 +1,20 @@
+<p-toast position="top-right"></p-toast>
+<p-dialog header="Edit User" [modal]="true" [(visible)]="editUserVisible" [style]="{width: '30vw'}">
+  <form [formGroup]="editUserData" (ngSubmit)="commitUserEdit()">
+    <div class="flex flex-column justify-content-evenly mb-4">
+      <input pInputText placeholder="Password" autocomplete="off" class="mb-3" formControlName="newPassword"/>
+      <input pInputText placeholder="Repeat Password" autocomplete="off"
+             formControlName="repeatPassword"/>
+    </div>
+    <div class="flex justify-content-end gap-3">
+      <p-button label="Cancel" severity="danger" (click)="editUserVisible.set(false)"/>
+      <p-button label="Save" type="submit" severity="success" [disabled]="editUserData.invalid"/>
+    </div>
+  </form>
+</p-dialog>
+
+<app-confirm-dialog #logOutConfirm (perform)="sessionService.dropSession()" description="Do you want to log out?"></app-confirm-dialog>
+
 <div class="grid grid-nogutter text-500">
   <div class="col-12 xl:col-2 surface-50 shadow-7 select-none xl:h-screen xl:top-0 xl:sticky">
     <div class="flex flex-column flex-grow-0 w-full h-full p-3">
@@ -16,7 +33,12 @@
         }
       </ul>
       <div class="h-full w-full flex justify-content-end flex-column">
-        <p-button severity="danger" (click)="sessionService.dropSession()" outlined>Log out</p-button>
+        <div class="flex flex-row justify-content-evenly gap-3">
+          <button pButton severity="danger" (click)="logOutConfirm.show()" outlined class="flex-1"
+                  icon="pi pi-sign-out"></button>
+          <button pButton severity="warning" (click)="editUser()" outlined icon="pi pi-pencil"
+                  class="flex-1"></button>
+        </div>
       </div>
     </div>
   </div>

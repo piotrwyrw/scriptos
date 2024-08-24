@@ -1,0 +1,7 @@
+<p-dialog header="Are you sure?" [modal]="true" [(visible)]="visible" [style]="{width: '30vw'}">
+  <span>{{ description }}</span>
+    <div class="flex justify-content-end gap-3">
+      <p-button label="Cancel" severity="danger" (click)="visible.set(false)" />
+      <p-button label="Proceed" type="submit" severity="success" (click)="perform.next()" />
+    </div>
+</p-dialog>

@@ -8,3 +8,4 @@ export * from './loginRequest';
 export * from './registerRequest';
 export * from './removeUserFromGroupRequest';
 export * from './tokenResponse';
+export * from './userEditRequest';

@@ -4,6 +4,7 @@ import dev.piotrwyrw.scriptos.api.UserApi
 import dev.piotrwyrw.scriptos.api.model.LoginRequest
 import dev.piotrwyrw.scriptos.api.model.RegisterRequest
 import dev.piotrwyrw.scriptos.api.model.TokenResponse
+import dev.piotrwyrw.scriptos.api.model.UserEditRequest
 import dev.piotrwyrw.scriptos.exception.ScriptosException
 import dev.piotrwyrw.scriptos.service.AuthenticationService
 import dev.piotrwyrw.scriptos.service.GroupService
@@ -35,6 +36,11 @@ class UserController(
 
     override fun dropSession(): ResponseEntity<Unit> {
         sessionService.invalidateSession()
+        return ResponseEntity.ok().build()
+    }
+
+    override fun editUser(userEditRequest: UserEditRequest): ResponseEntity<Unit> {
+        userService.editUser(userEditRequest)
         return ResponseEntity.ok().build()
     }
 }

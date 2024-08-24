@@ -1,4 +1,4 @@
-<p-dialog header="New Group" [modal]="true" [(visible)]="newGroupDialogVisible" (close)="newGroupDialogVisible.set(false)" [style]="{width: '30vw'}">
+<p-dialog header="New Group" [modal]="true" [(visible)]="newGroupDialogVisible" [style]="{width: '30vw'}">
   <form [formGroup]="newGroupForm" (ngSubmit)="commitNewGroupRequest()">
     <div class="flex flex-column justify-content-evenly mb-4">
       <input pInputText id="name" placeholder="Group Name" autocomplete="off" class="mb-3" formControlName="name"/>

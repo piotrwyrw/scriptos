@@ -1,11 +1,18 @@
-import {AfterViewInit, Component} from '@angular/core';
+import {AfterViewInit, Component, signal} from '@angular/core';
 import {CardModule} from "primeng/card";
 import {SidebarModule} from "primeng/sidebar";
-import {Button} from "primeng/button";
+import {Button, ButtonDirective} from "primeng/button";
 import {Ripple} from "primeng/ripple";
 import {Router, RouterOutlet} from "@angular/router";
 import {MenuModule} from "primeng/menu";
 import {SessionService} from "../../service/session.service";
+import {DialogModule} from "primeng/dialog";
+import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
+import {InputTextModule} from "primeng/inputtext";
+import {UserService} from "../../openapi";
+import {NotificationService} from "../../service/notification.service";
+import {ToastModule} from "primeng/toast";
+import {ConfirmDialogComponent} from "../../component/confirm-dialog/confirm-dialog.component";
 
 @Component({
   selector: 'app-dashboard',
@@ -16,7 +23,14 @@ import {SessionService} from "../../service/session.service";
     Button,
     Ripple,
     RouterOutlet,
-    MenuModule
+    MenuModule,
+    ButtonDirective,
+    DialogModule,
+    FormsModule,
+    InputTextModule,
+    ReactiveFormsModule,
+    ToastModule,
+    ConfirmDialogComponent
   ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss'
@@ -58,12 +72,50 @@ export class DashboardComponent implements AfterViewInit {
 
   protected selectedEntry: string = ''
 
-  select(name: string) {
-    this.selectedEntry = name
+  editUserVisible = signal(false)
+
+  editUserData = new FormGroup({
+    newPassword: new FormControl('', [
+      Validators.required,
+      Validators.minLength(8)
+    ]),
+    repeatPassword: new FormControl('', [
+      Validators.required,
+      Validators.minLength(8)
+    ])
+  })
+
+  constructor(private router: Router, protected sessionService: SessionService, private userService: UserService, private notificationService: NotificationService) {
+    this.highlightMenuEntry()
   }
 
-  constructor(private router: Router, protected sessionService: SessionService) {
-    this.highlightMenuEntry()
+  editUser() {
+    this.editUserData.reset()
+    this.editUserVisible.set(true)
+  }
+
+  commitUserEdit() {
+    let newPassword = this.editUserData.controls['newPassword'].value!!
+    let repeatPasswd = this.editUserData.controls['repeatPassword'].value!!
+    if (newPassword != repeatPasswd) {
+      this.notificationService.error("Could not update password", "The passwords don't match")
+      return
+    }
+    this.editUserVisible.set(false)
+    this.userService.editUser({
+      newPassword: newPassword
+    }).subscribe({
+      next: resp => {
+        this.notificationService.success("Success", "Password updated successfully")
+      },
+      error: err => {
+        this.notificationService.displayResponse(err.error)
+      }
+    })
+  }
+
+  select(name: string) {
+    this.selectedEntry = name
   }
 
   // Figure out where we are to show the correct menu entry

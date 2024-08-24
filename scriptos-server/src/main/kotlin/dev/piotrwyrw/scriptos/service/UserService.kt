@@ -71,6 +71,11 @@ class UserService(
         val user = currentUser()!!
 
         if (req.newPassword != null) {
+            if (user.id == systemAdministrator().id)
+                throw ScriptosException(
+                    "The password of the admin user can only be changed in the Scriptos config",
+                    HttpStatus.BAD_REQUEST
+                )
             if (!req.newPassword.isValidPassword())
                 throw ScriptosException(
                     "The password does not match the required format",

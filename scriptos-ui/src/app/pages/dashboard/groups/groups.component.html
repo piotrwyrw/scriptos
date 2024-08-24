@@ -16,8 +16,9 @@
 </div>
 
 <div class="p-5">
-  <div *ngIf="!groupService.loadingGroups()" class="w-full">
+  <div *ngIf="!groupService.loadingGroups()" class="flex flex-row gap-3">
     <p-button severity="success" icon="pi pi-plus" (click)="newGroup()" outlined></p-button>
+    <p-button severity="info" icon="pi pi-refresh" (click)="loadGroups()" outlined></p-button>
   </div>
 
   <div *ngIf="!groupService.loadingGroups()"

@@ -27,4 +27,10 @@ class DocumentEntity {
     @Column(name = "author_id")
     lateinit var authorId: UUID
 
+    @Column(name = "byte_size")
+    var byteSize: Long = 0
+
+    @Column(name = "status_monitor")
+    lateinit var statusMonitor: UUID
+
 }

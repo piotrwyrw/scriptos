@@ -161,6 +161,63 @@ paths:
         200:
           description: OK
 
+  /document:
+    post:
+      operationId: documentUpload
+      summary: Create and upload a new document
+      tags:
+        - Document
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/documentUploadRequest"
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/monitoringIdResponse"
+
+  /monitor/{id}:
+    get:
+      operationId: retrieveMonitorContent
+      summary: Get the last value of the monitor with the given ID
+      tags:
+        - Monitoring
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The monitor ID to query
+          schema:
+            type: string
+            format: uuid
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/monitorResponse"
+
+  /stats/disk:
+    get:
+      operationId: getDiskUsage
+      summary: Get the currently used number of bytes by the doc storage
+      tags:
+        - Statistics
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/diskUsageResponse"
+
+
 components:
   schemas:
     registerRequest:
@@ -270,3 +327,54 @@ components:
       properties:
         newPassword:
           type: string
+
+    documentUploadRequest:
+      type: object
+      required:
+        - title
+        - description
+        - group
+        - filename
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+        group:
+          type: string
+          format: string
+        filename:
+          type: string
+          format: binary
+
+    monitoringIdResponse:
+      type: object
+      required:
+        - monitorId
+      properties:
+        monitorId:
+          type: string
+          format: uuid
+
+    monitorResponse:
+      type: object
+      required:
+        - monitor
+        - content
+        - done
+      properties:
+        monitor:
+          type: string
+          format: uuid
+        content:
+          type: string
+        done:
+          type: boolean
+
+    diskUsageResponse:
+      type: object
+      required:
+        - bytes
+      properties:
+        bytes:
+          type: long

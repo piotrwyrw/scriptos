@@ -144,4 +144,6 @@ class GroupService(
 
     fun commonGroupDescription() = groupsConfig.commonGroupDescription
 
+    fun byId(id: UUID): GroupEntity? = groupRepository.findById(id).getOrNull()
+
 }

@@ -24,6 +24,11 @@ scriptos:
     common-group-name: common
   storage:
     directory: scriptos-data
+    accepted-extensions:
+      - PNG
+      - PDF
+      - JPG
+      - TXT
   admin:
     username: admin
     password: piotr2005

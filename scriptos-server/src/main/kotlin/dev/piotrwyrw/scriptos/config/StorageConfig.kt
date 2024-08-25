@@ -9,7 +9,8 @@ import java.io.File
 @Component
 @ConfigurationProperties(prefix = "scriptos.storage")
 class StorageConfig(
-    var directory: String = "scriptos-data"
+    var directory: String = "scriptos-data",
+    var acceptedExtensions: Array<String> = arrayOf("PDF", "PNG", "JPG", "JPEG")
 ) {
 
     val logger = LoggerFactory.getLogger(javaClass)

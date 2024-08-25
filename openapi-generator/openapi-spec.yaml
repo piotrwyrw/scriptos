@@ -161,6 +161,26 @@ paths:
         200:
           description: OK
 
+  /group/{name}:
+    get:
+      operationId: getAllDocuments
+      summary: Get all documents of the given group
+      tags:
+        - Document
+      parameters:
+        - in: path
+          name: name
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/documentListingResponse"
+
   /document:
     post:
       operationId: documentUpload
@@ -377,4 +397,27 @@ components:
         - bytes
       properties:
         bytes:
-          type: long
+          type: integer
+          format: int64
+
+    documentListingResponse:
+      type: array
+      items:
+        type: object
+        required:
+          - id
+          - title
+          - description
+          - byteSize
+        properties:
+          id:
+            type: string
+            format: uuid
+          title:
+            type: string
+          description:
+            type: string
+          byteSize:
+            type: integer
+            format: int64
+

@@ -6,6 +6,7 @@ import dev.piotrwyrw.scriptos.api.model.MonitoringIdResponse
 import dev.piotrwyrw.scriptos.exception.ScriptosException
 import dev.piotrwyrw.scriptos.service.DocumentService
 import dev.piotrwyrw.scriptos.service.GroupService
+import dev.piotrwyrw.scriptos.service.UserService
 import dev.piotrwyrw.scriptos.util.currentUser
 import jakarta.transaction.Transactional
 import org.springframework.core.io.ByteArrayResource
@@ -17,7 +18,8 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 class DocumentController(
     private val documentService: DocumentService,
-    private val groupService: GroupService
+    private val groupService: GroupService,
+    private val userService: UserService
 ) : DocumentApi {
 
     @Transactional
@@ -58,6 +60,8 @@ class DocumentController(
                 it.id,
                 it.title,
                 it.description,
+                it.fileType,
+                userService.findUser(it.authorId)!!.username,
                 it.byteSize
             )
         }

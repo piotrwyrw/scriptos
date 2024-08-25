@@ -408,6 +408,8 @@ components:
           - id
           - title
           - description
+          - extension
+          - author
           - byteSize
         properties:
           id:
@@ -416,6 +418,10 @@ components:
           title:
             type: string
           description:
+            type: string
+          extension:
+            type: string
+          author:
             type: string
           byteSize:
             type: integer

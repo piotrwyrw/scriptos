@@ -24,6 +24,9 @@ class DocumentEntity {
     @Column(name = "group_id")
     lateinit var groupId: UUID
 
+    @Column(name = "file_type")
+    lateinit var fileType: String
+
     @Column(name = "author_id")
     lateinit var authorId: UUID
 

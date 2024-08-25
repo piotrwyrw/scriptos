@@ -18,6 +18,8 @@ create table document
     group_id       uuid             not null,
     author_id      uuid             not null,
 
+    file_type      text             not null,
+
     byte_size      bigint           not null default 0,
 
     status_monitor uuid,

@@ -10,9 +10,7 @@ import org.slf4j.LoggerFactory
 import org.springframework.core.io.ByteArrayResource
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
-import java.io.File
-import java.io.FileOutputStream
-import java.io.InputStreamReader
+import java.io.*
 import java.util.concurrent.CompletableFuture
 import kotlin.math.max
 import kotlin.math.round
@@ -32,7 +30,8 @@ class StorageService(
         document: DocumentEntity,
         fileSize: Long,
         documentService: DocumentService,
-        filename: String
+        filename: String,
+        extension: String
     ) {
 
         logger.info("Starting upload for document ${document.id} [${filename}]")
@@ -45,33 +44,11 @@ class StorageService(
         val dir = File(storageConfig.directory, group.name)
         dir.mkdirs()
 
-        val extension: String
-
-        filename.split(".").let {
-            if (it.size <= 1)
-                throw ScriptosException(
-                    "Could not extract file extension from the given file",
-                    HttpStatus.UNPROCESSABLE_ENTITY
-                )
-
-            extension = it.subList(1, it.size).reduce(String::plus)
-        }
-
-        if (!storageConfig.acceptedExtensions.contains(extension.uppercase()))
-            throw ScriptosException(
-                "The extension '$extension' is not allowed. Acceptable extensions are ${
-                    jacksonObjectMapper.writeValueAsString(
-                        storageConfig.acceptedExtensions
-                    )
-                }",
-                HttpStatus.UNPROCESSABLE_ENTITY
-            )
-
         val targetFile = File(storageConfig.directory, "${group.name}/${document.id}.$extension")
 
-        val reader = InputStreamReader(resource.inputStream)
+        val reader = BufferedInputStream(resource.inputStream)
 
-        val outputStream = FileOutputStream(targetFile)
+        val outputStream = BufferedOutputStream(FileOutputStream(targetFile))
 
         var bytesUploaded: Long = 100
         var uploadPercentage: Double

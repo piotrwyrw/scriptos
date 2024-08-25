@@ -5,6 +5,7 @@ import {tokenGuard} from "./guard/token.guard";
 import {OverviewComponent} from "./pages/dashboard/overview/overview.component";
 import {GroupsComponent} from "./pages/dashboard/groups/groups.component";
 import {authenticationGuard} from "./guard/authentication.guard";
+import {ExplorerComponent} from "./pages/explorer/explorer.component";
 
 export const routes: Routes = [
   {
@@ -29,6 +30,10 @@ export const routes: Routes = [
       {
         path: 'groups',
         component: GroupsComponent
+      },
+      {
+        path: 'explorer',
+        component: ExplorerComponent
       }
     ]
   },

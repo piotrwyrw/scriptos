@@ -26,7 +26,7 @@
     @for (group of groupService.groups; track group) {
       <div pRipple
            class="surface-card p-3 border-round flex flex-column group-box shadow-5 {{ groupService.selectedGroup() == group.name ? 'selected-group' : '' }}"
-           (click)="groupService.selectGroup(group.name)">
+           (click)="selectGroup(group.name)">
         <div class="flex justify-content-between align-items-center">
           <span class="font-bold">{{ group.name }}</span>
           <p-chip label="Admin" icon="pi pi-bolt"></p-chip>

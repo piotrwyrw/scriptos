@@ -35,6 +35,4 @@ export class OverviewComponent {
       }
     ]
   }
-
-  protected readonly screen = screen;
 }

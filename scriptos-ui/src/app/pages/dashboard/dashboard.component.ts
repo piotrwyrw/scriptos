@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, signal} from '@angular/core';
+import {AfterContentChecked, AfterViewInit, ChangeDetectorRef, Component, signal} from '@angular/core';
 import {CardModule} from "primeng/card";
 import {SidebarModule} from "primeng/sidebar";
 import {Button, ButtonDirective} from "primeng/button";
@@ -13,6 +13,7 @@ import {UserService} from "../../openapi";
 import {NotificationService} from "../../service/notification.service";
 import {ToastModule} from "primeng/toast";
 import {ConfirmDialogComponent} from "../../component/confirm-dialog/confirm-dialog.component";
+import {BackendGroupService} from "../../service/backend-group.service";
 
 @Component({
   selector: 'app-dashboard',
@@ -35,9 +36,9 @@ import {ConfirmDialogComponent} from "../../component/confirm-dialog/confirm-dia
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss'
 })
-export class DashboardComponent implements AfterViewInit {
+export class DashboardComponent implements AfterViewInit, AfterContentChecked {
 
-  protected menu = [
+  protected menu: any[] = [
     {
       label: 'Overview',
       iconClass: 'pi pi-home',
@@ -51,12 +52,6 @@ export class DashboardComponent implements AfterViewInit {
       shown: true
     },
     {
-      label: 'Explorer',
-      iconClass: 'pi pi-folder',
-      link: '/dashboard',
-      shown: false
-    },
-    {
       label: 'Users',
       iconClass: 'pi pi-user',
       link: '/dashboard',
@@ -67,8 +62,64 @@ export class DashboardComponent implements AfterViewInit {
       iconClass: 'pi pi-bolt',
       link: '/dashboard',
       shown: true
-    }
-  ]
+    }]
+
+  protected regenMenu(): void {
+    this.menu = (this.groupService.selectedGroup()) ?
+      [{
+        label: 'Overview',
+        iconClass: 'pi pi-home',
+        link: '/dashboard/overview',
+        shown: true
+      },
+        {
+          label: 'Groups',
+          iconClass: 'pi pi-list',
+          link: '/dashboard/groups',
+          shown: true
+        },
+        {
+          label: 'Explorer',
+          iconClass: 'pi pi-folder',
+          link: '/dashboard/explorer',
+          shown: true
+        },
+        {
+          label: 'Users',
+          iconClass: 'pi pi-user',
+          link: '/dashboard',
+          shown: true
+        },
+        {
+          label: 'Admin',
+          iconClass: 'pi pi-bolt',
+          link: '/dashboard',
+          shown: true
+        }] : [{
+        label: 'Overview',
+        iconClass: 'pi pi-home',
+        link: '/dashboard/overview',
+        shown: true
+      },
+        {
+          label: 'Groups',
+          iconClass: 'pi pi-list',
+          link: '/dashboard/groups',
+          shown: true
+        },
+        {
+          label: 'Users',
+          iconClass: 'pi pi-user',
+          link: '/dashboard',
+          shown: true
+        },
+        {
+          label: 'Admin',
+          iconClass: 'pi pi-bolt',
+          link: '/dashboard',
+          shown: true
+        }]
+  }
 
   protected selectedEntry: string = ''
 
@@ -85,7 +136,21 @@ export class DashboardComponent implements AfterViewInit {
     ])
   })
 
-  constructor(private router: Router, protected sessionService: SessionService, private userService: UserService, private notificationService: NotificationService) {
+  constructor(private router: Router, private changeDetectorRef: ChangeDetectorRef, protected sessionService: SessionService, private userService: UserService, private notificationService: NotificationService, private groupService: BackendGroupService) {
+    this.highlightMenuEntry()
+    this.groupService.groupUpdated.subscribe({
+      next: (group: string | undefined) => {
+        this.updateExplorerTab()
+      }
+    })
+    this.updateExplorerTab()
+  }
+
+  updateExplorerTab() {
+    this.regenMenu()
+  }
+
+  ngAfterContentChecked(): void {
     this.highlightMenuEntry()
   }
 
@@ -121,7 +186,7 @@ export class DashboardComponent implements AfterViewInit {
   // Figure out where we are to show the correct menu entry
   highlightMenuEntry() {
     let location = this.router.url
-    let menuOption = this.menu.find(entry => entry.link === location)
+    let menuOption = this.menu.find((entry: any) => entry.link === location)
     if (!menuOption)
       this.selectedEntry = 'overview'
     else

@@ -19,7 +19,7 @@
   <div class="col-12 xl:col-2 surface-50 shadow-7 select-none xl:h-screen xl:top-0 xl:sticky">
     <div class="flex flex-column flex-grow-0 w-full h-full p-3">
       <ul class="list-none p-0 m-0">
-        @for (menuEntry of menu; track menuEntry.label) {
+        @for (menuEntry of menu; track menuEntry) {
           @if (menuEntry.shown) {
             <li>
               <a pRipple [routerLink]="menuEntry.link"

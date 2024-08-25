@@ -1,4 +1,4 @@
-import {Injectable, signal} from '@angular/core';
+import {EventEmitter, Injectable, signal} from '@angular/core';
 import {GroupListingResponseInner, GroupsService} from "../openapi";
 import {NotificationService} from "./notification.service";
 
@@ -13,8 +13,15 @@ export class BackendGroupService {
 
   private _selectedGroup: string | undefined
 
+  public groupUpdated = new EventEmitter<string | undefined>()
+
   constructor(private groupService: GroupsService, private notificationService: NotificationService) {
     this.loadGroups()
+
+    let lsGroup = localStorage.getItem('scriptos-group')
+
+    if (lsGroup)
+      this.selectGroup(lsGroup)
   }
 
   loadGroups() {
@@ -48,7 +55,16 @@ export class BackendGroupService {
   }
 
   selectGroup(group: string) {
-    this._selectedGroup = (this._selectedGroup == group) ? '' : group
+    this._selectedGroup = (this._selectedGroup == group) ? undefined : group
+
+    if (!this._selectedGroup) {
+      localStorage.removeItem('scriptos-group')
+    } else {
+      localStorage.setItem('scriptos-group', this._selectedGroup)
+    }
+
+    this.groupUpdated.emit(this._selectedGroup)
+
     // TODO Load group data?
   }
 

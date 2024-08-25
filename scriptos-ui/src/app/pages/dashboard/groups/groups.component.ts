@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, signal} from '@angular/core';
+import {AfterViewInit, Component, EventEmitter, Output, signal} from '@angular/core';
 import {BackendGroupService} from "../../../service/backend-group.service";
 import {ProgressSpinnerModule} from "primeng/progressspinner";
 import {NgIf} from "@angular/common";
@@ -58,6 +58,10 @@ export class GroupsComponent implements AfterViewInit {
 
   loadGroups() {
     this.groupService.loadGroups()
+  }
+
+  selectGroup(group: string) {
+    this.groupService.selectGroup(group)
   }
 
 }

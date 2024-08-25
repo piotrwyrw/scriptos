@@ -36,7 +36,7 @@ class DocumentEntity {
     @Column(name = "status_monitor")
     lateinit var statusMonitor: UUID
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "group_id", insertable = false, updatable = false)
     lateinit var group: GroupEntity
 

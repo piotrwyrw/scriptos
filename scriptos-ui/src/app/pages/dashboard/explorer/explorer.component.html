@@ -8,21 +8,30 @@
       <p-progressSpinner></p-progressSpinner>
     </div>
   } @else {
-    <div class="flex justify-content-start align-items-start groups-container mt-5 gap-5">
-      @for (document of backendDocumentService.documents; track document) {
-        <div pRipple class="surface-card p-3 border-round flex flex-column shadow-5 document-box flex-shrink-1" pTooltip="{{ document.title }}" showDelay="500">
-          <div class="flex justify-content-between align-items-center min-w-0">
+    @if (backendDocumentService.documents.length == 0) {
+      <div class="flex flex-column justify-content-center align-items-center h-full w-full">
+        <h3>( No files )</h3>
+      </div>
+    } @else {
+      <div class="flex justify-content-start align-items-start groups-container mt-5 gap-5">
+        @for (document of backendDocumentService.documents; track document) {
+          <div pRipple class="surface-card p-3 border-round flex flex-column shadow-5 document-box flex-shrink-1"
+               pTooltip="{{ document.title }}" showDelay="500">
+            <div class="flex justify-content-between align-items-center min-w-0">
             <span
               class="font-bold overflow-hidden white-space-nowrap text-overflow-ellipsis">{{ document.title }}</span>
+            </div>
+            <div class="flex flex-row justify-content-start gap-3 mt-2 flex-wrap flex-shrink-1">
+              <p-chip label="{{ document.author }}" icon="pi pi-user" pTooltip="Author" tooltipPosition="top"></p-chip>
+              <p-chip label="{{ document.extension.toUpperCase() }}" icon="pi pi-box" pTooltip="File extension"
+                      tooltipPosition="top"></p-chip>
+              <p-chip label="{{ fileSizeService.size(document.byteSize) }}" icon="pi pi-gauge" pTooltip="File size"
+                      tooltipPosition="top"></p-chip>
+            </div>
+            <span class="font-light mt-2">{{ document.description }}</span>
           </div>
-          <div class="flex flex-row justify-content-start gap-3 mt-2 flex-wrap flex-shrink-1">
-            <p-chip label="{{ document.author }}" icon="pi pi-user" pTooltip="Author" tooltipPosition="top"></p-chip>
-            <p-chip label="{{ document.extension.toUpperCase() }}" icon="pi pi-box" pTooltip="File extension" tooltipPosition="top"></p-chip>
-            <p-chip label="{{ fileSizeService.size(document.byteSize) }}" icon="pi pi-gauge" pTooltip="File size" tooltipPosition="top"></p-chip>
-          </div>
-          <span class="font-light mt-2">{{ document.description }}</span>
-        </div>
-      }
-    </div>
+        }
+      </div>
+    }
   }
 </div>

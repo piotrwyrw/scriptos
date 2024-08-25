@@ -49,7 +49,7 @@ class DocumentController(
 
         val user = currentUser()!!
 
-        if (group.adminUser != user.id && group.members.none { it.id == user.id })
+        if (group.adminUser != user.id && group.members.none { it.id == user.id } && user.id != userService.systemAdministrator().id)
             throw ScriptosException(
                 "You do not have permissions to access the documents of group '$name'",
                 HttpStatus.FORBIDDEN

@@ -22,7 +22,7 @@ class UserEntity {
     @Column(name = "password_hash")
     lateinit var passwordHash: String
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
         name = "group_membership",
         joinColumns = [JoinColumn(name = "user_id")],

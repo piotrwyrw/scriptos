@@ -105,6 +105,7 @@ class GroupService(
         logger.info("User \"${username}\" removed from group \"${groupName}\"")
     }
 
+    @Transactional
     fun retrieveViewableGroups(): List<GroupEntity> {
         val currUser = currentUser()!!
         return if (userService.systemAdministrator().id != currUser.id)

@@ -1,7 +1,13 @@
+export * from './document.service';
+import { DocumentService } from './document.service';
 export * from './groups.service';
 import { GroupsService } from './groups.service';
+export * from './monitoring.service';
+import { MonitoringService } from './monitoring.service';
 export * from './security.service';
 import { SecurityService } from './security.service';
+export * from './statistics.service';
+import { StatisticsService } from './statistics.service';
 export * from './user.service';
 import { UserService } from './user.service';
-export const APIS = [GroupsService, SecurityService, UserService];
+export const APIS = [DocumentService, GroupsService, MonitoringService, SecurityService, StatisticsService, UserService];

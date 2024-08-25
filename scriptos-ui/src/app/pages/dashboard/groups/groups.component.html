@@ -5,7 +5,7 @@
       <input pInputText id="description" placeholder="Description" autocomplete="off" formControlName="description"/>
     </div>
     <div class="flex justify-content-end gap-3">
-      <p-button label="Cancel" severity="danger" (click)="newGroupDialogVisible.set(false)" />
+      <p-button label="Cancel" severity="danger" (click)="newGroupDialogVisible.set(false)"/>
       <p-button label="Save" type="submit" severity="success" [disabled]="newGroupForm.invalid"/>
     </div>
   </form>
@@ -15,17 +15,20 @@
   <p-progressSpinner></p-progressSpinner>
 </div>
 
-<div class="p-5">
-  <div *ngIf="!groupService.loadingGroups()" class="flex flex-row gap-3">
-    <p-button severity="success" icon="pi pi-plus" (click)="newGroup()" outlined></p-button>
-    <p-button severity="info" icon="pi pi-refresh" (click)="loadGroups()" outlined></p-button>
+<div class="p-4">
+  <div class="w-full flex flex-row align-items-center">
+    <h2 class="inline">Groups</h2>
+    <div *ngIf="!groupService.loadingGroups()" class="inline-flex flex-row align-content-end justify-content-end gap-3 w-full">
+      <p-button severity="success" icon="pi pi-plus" (click)="newGroup()" outlined></p-button>
+      <p-button severity="info" icon="pi pi-refresh" (click)="loadGroups()" outlined></p-button>
+    </div>
   </div>
 
   <div *ngIf="!groupService.loadingGroups()"
        class="flex justify-content-start align-items-start groups-container mt-5 gap-5">
     @for (group of groupService.groups; track group) {
       <div pRipple
-           class="surface-card p-3 border-round flex flex-column group-box shadow-5 {{ groupService.selectedGroup() == group.name ? 'selected-group' : '' }}"
+           class="surface-card p-3 border-round flex flex-column group-box shadow-5 min-w-0 {{ groupService.selectedGroup() == group.name ? 'selected-group' : '' }}"
            (click)="selectGroup(group.name)">
         <div class="flex justify-content-between align-items-center">
           <span class="font-bold">{{ group.name }}</span>

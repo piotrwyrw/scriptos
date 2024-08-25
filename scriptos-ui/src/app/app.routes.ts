@@ -5,7 +5,7 @@ import {tokenGuard} from "./guard/token.guard";
 import {OverviewComponent} from "./pages/dashboard/overview/overview.component";
 import {GroupsComponent} from "./pages/dashboard/groups/groups.component";
 import {authenticationGuard} from "./guard/authentication.guard";
-import {ExplorerComponent} from "./pages/explorer/explorer.component";
+import {ExplorerComponent} from "./pages/dashboard/explorer/explorer.component";
 
 export const routes: Routes = [
   {

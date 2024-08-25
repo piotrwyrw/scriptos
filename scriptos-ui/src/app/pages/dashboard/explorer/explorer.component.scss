@@ -1,0 +1,8 @@
+.document-box {
+  transition: background-color .1s ease-in-out;
+  max-width: 400px;
+}
+
+.document-box:hover {
+  background-color: var(--surface-100) !important;
+}

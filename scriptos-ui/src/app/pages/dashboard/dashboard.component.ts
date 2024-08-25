@@ -79,7 +79,7 @@ export class DashboardComponent implements AfterViewInit, AfterContentChecked {
           shown: true
         },
         {
-          label: 'Explorer',
+          label: this.groupService.selectedGroup()!![0].toUpperCase() + this.groupService.selectedGroup()?.substring(1),
           iconClass: 'pi pi-folder',
           link: '/dashboard/explorer',
           shown: true

@@ -25,10 +25,10 @@ scriptos:
   storage:
     directory: scriptos-data
     accepted-extensions:
-      - PNG
-      - PDF
-      - JPG
-      - TXT
+      - png
+      - pdf
+      - jpg
+      - txt
   admin:
     username: admin
     password: piotr2005

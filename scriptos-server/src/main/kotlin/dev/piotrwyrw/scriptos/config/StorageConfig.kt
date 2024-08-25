@@ -26,6 +26,11 @@ class StorageConfig(
             throw IllegalStateException("The Scriptos data directory \"${directory}\" exists but is not a directory.\"")
         else
             logger.info("Scriptos data directory exists at ${file.absolutePath}")
+
+        acceptedExtensions = acceptedExtensions.map {
+            it.uppercase()
+        }.toTypedArray()
+
     }
 
 }

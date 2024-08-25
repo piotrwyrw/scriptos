@@ -19,7 +19,7 @@ import kotlin.math.round
 class StorageService(
     val storageConfig: StorageConfig,
     val groupService: GroupService,
-    private val jacksonObjectMapper: ObjectMapper,
+    val jacksonObjectMapper: ObjectMapper,
 ) {
 
     val logger: Logger = LoggerFactory.getLogger(javaClass)

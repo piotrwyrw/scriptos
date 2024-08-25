@@ -61,7 +61,7 @@ class DocumentService(
                 "The extension '$extension' is not allowed. Acceptable extensions are ${
                     jacksonObjectMapper.writeValueAsString(
                         storageConfig.acceptedExtensions
-                    )
+                    ).replace("[\"\\[\\]]".toRegex(), "").replace(",", ", ")
                 }",
                 HttpStatus.UNPROCESSABLE_ENTITY
             )

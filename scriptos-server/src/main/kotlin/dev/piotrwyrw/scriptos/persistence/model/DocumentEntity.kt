@@ -2,7 +2,7 @@ package dev.piotrwyrw.scriptos.persistence.model
 
 import jakarta.persistence.*
 import java.time.Instant
-import java.util.UUID
+import java.util.*
 
 @Entity
 @Table(name = "document")
@@ -32,5 +32,9 @@ class DocumentEntity {
 
     @Column(name = "status_monitor")
     lateinit var statusMonitor: UUID
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "group_id", insertable = false, updatable = false)
+    lateinit var group: GroupEntity
 
 }

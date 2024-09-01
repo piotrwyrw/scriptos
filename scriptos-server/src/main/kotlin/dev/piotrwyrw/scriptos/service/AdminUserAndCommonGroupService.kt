@@ -25,12 +25,14 @@ class AdminUserAndCommonGroupService(
     fun ensureAdminUserExists(): Boolean {
         if (userService.byUsername(adminUserConfig.username) == null) {
             userService.createUser(adminUserConfig.username, adminUserConfig.password)
-            logger.info("The admin user \"${adminUserConfig.username}\" was created with password \"${adminUserConfig.password}\"")
+            logger.info("The admin user \"${adminUserConfig.username}\" was created.")
             return false
         }
 
+        logger.info("------------------------------")
         logger.info("Admin user: ${adminUserConfig.username}")
         logger.info("Admin password: ${adminUserConfig.password}")
+        logger.info("------------------------------")
         return true
     }
 

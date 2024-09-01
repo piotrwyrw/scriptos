@@ -9,11 +9,12 @@ import {SessionService} from "../../service/session.service";
 import {DialogModule} from "primeng/dialog";
 import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import {InputTextModule} from "primeng/inputtext";
-import {UserService} from "../../openapi";
+import {SecurityService, UserService} from "../../openapi";
 import {NotificationService} from "../../service/notification.service";
 import {ToastModule} from "primeng/toast";
 import {ConfirmDialogComponent} from "../../component/confirm-dialog/confirm-dialog.component";
 import {BackendGroupService} from "../../service/backend-group.service";
+import {AuthenticationService} from "../../service/authentication.service";
 
 @Component({
   selector: 'app-dashboard',
@@ -38,7 +39,7 @@ import {BackendGroupService} from "../../service/backend-group.service";
 })
 export class DashboardComponent implements AfterViewInit, AfterContentChecked {
 
-  protected menu: any[] = [
+  private orgMenu: any[] = [
     {
       label: 'Overview',
       iconClass: 'pi pi-home',
@@ -54,71 +55,37 @@ export class DashboardComponent implements AfterViewInit, AfterContentChecked {
     {
       label: 'Users',
       iconClass: 'pi pi-user',
-      link: '/dashboard',
-      shown: true
-    },
-    {
-      label: 'Admin',
-      iconClass: 'pi pi-bolt',
-      link: '/dashboard',
+      link: '/dashboard/users',
       shown: true
     }]
 
+  protected menu: any[] = this.orgMenu
+
   protected regenMenu(): void {
-    this.menu = (this.groupService.selectedGroup()) ?
-      [{
-        label: 'Overview',
-        iconClass: 'pi pi-home',
-        link: '/dashboard/overview',
+    let clonedMenu = Object.assign([], this.orgMenu)
+
+    if (this.groupService.selectedGroup())
+      clonedMenu.push({
+        label: this.groupService.selectedGroup(),
+        iconClass: 'pi pi-folder',
+        link: '/dashboard/explorer',
         shown: true
-      },
-        {
-          label: 'Groups',
-          iconClass: 'pi pi-list',
-          link: '/dashboard/groups',
-          shown: true
-        },
-        {
-          label: this.groupService.selectedGroup()!![0].toUpperCase() + this.groupService.selectedGroup()?.substring(1),
-          iconClass: 'pi pi-folder',
-          link: '/dashboard/explorer',
-          shown: true
-        },
-        {
-          label: 'Users',
-          iconClass: 'pi pi-user',
-          link: '/dashboard',
-          shown: true
-        },
-        {
-          label: 'Admin',
+      })
+
+    this.security.securedAdminRoute().subscribe({
+      next: resp => {
+        clonedMenu.push({
+          label: 'Administration',
           iconClass: 'pi pi-bolt',
-          link: '/dashboard',
+          link: '/dashboard/admin',
           shown: true
-        }] : [{
-        label: 'Overview',
-        iconClass: 'pi pi-home',
-        link: '/dashboard/overview',
-        shown: true
+        })
+        this.menu = clonedMenu
       },
-        {
-          label: 'Groups',
-          iconClass: 'pi pi-list',
-          link: '/dashboard/groups',
-          shown: true
-        },
-        {
-          label: 'Users',
-          iconClass: 'pi pi-user',
-          link: '/dashboard',
-          shown: true
-        },
-        {
-          label: 'Admin',
-          iconClass: 'pi pi-bolt',
-          link: '/dashboard',
-          shown: true
-        }]
+      error: err => {
+        this.menu = clonedMenu
+      }
+    })
   }
 
   protected selectedEntry: string = ''
@@ -136,7 +103,7 @@ export class DashboardComponent implements AfterViewInit, AfterContentChecked {
     ])
   })
 
-  constructor(private router: Router, private changeDetectorRef: ChangeDetectorRef, protected sessionService: SessionService, private userService: UserService, private notificationService: NotificationService, private groupService: BackendGroupService) {
+  constructor(private router: Router, private changeDetectorRef: ChangeDetectorRef, protected sessionService: SessionService, private userService: UserService, private notificationService: NotificationService, private groupService: BackendGroupService, protected authService: AuthenticationService, protected security: SecurityService) {
     this.highlightMenuEntry()
     this.groupService.groupUpdated.subscribe({
       next: (group: string | undefined) => {

@@ -52,10 +52,12 @@ class StorageService(
 
         var bytesUploaded: Long = 100
         var uploadPercentage: Double
+
         val computePercentage: () -> Unit = {
             uploadPercentage = round((100.0 / fileSize.toDouble()) * bytesUploaded)
             documentService.updateMonitor(document, "${uploadPercentage.toInt()}%")
         }
+
         val computationFrequency = max(fileSize / 50, 100)
 
         val maxRetries = 10

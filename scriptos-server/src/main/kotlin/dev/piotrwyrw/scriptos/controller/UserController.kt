@@ -1,10 +1,7 @@
 package dev.piotrwyrw.scriptos.controller
 
 import dev.piotrwyrw.scriptos.api.UserApi
-import dev.piotrwyrw.scriptos.api.model.LoginRequest
-import dev.piotrwyrw.scriptos.api.model.RegisterRequest
-import dev.piotrwyrw.scriptos.api.model.TokenResponse
-import dev.piotrwyrw.scriptos.api.model.UserEditRequest
+import dev.piotrwyrw.scriptos.api.model.*
 import dev.piotrwyrw.scriptos.exception.ScriptosException
 import dev.piotrwyrw.scriptos.service.AuthenticationService
 import dev.piotrwyrw.scriptos.service.GroupService
@@ -22,10 +19,10 @@ class UserController(
     private val sessionService: SessionService
 ) : UserApi {
 
-    override fun userLogin(loginRequest: LoginRequest): ResponseEntity<TokenResponse> {
+    override fun userLogin(loginRequest: LoginRequest): ResponseEntity<LoginResponse> {
         val token = authenticationService.login(loginRequest)
             ?: throw ScriptosException("Could not find a user with the given credentials", HttpStatus.NOT_FOUND)
-        return ResponseEntity.ok(TokenResponse(token))
+        return ResponseEntity.ok(LoginResponse(token, loginRequest.username))
     }
 
     override fun userRegister(registerRequest: RegisterRequest): ResponseEntity<Unit> {

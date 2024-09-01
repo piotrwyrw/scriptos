@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {ErrorResponse, SecurityService, UserService} from "../openapi";
+import {BasicUserDataResponse, ErrorResponse, SecurityService, UserService} from "../openapi";
 import {SessionService} from "./session.service";
 import {catchError, map, Observable, of} from "rxjs";
 import {Router} from "@angular/router";
@@ -8,6 +8,8 @@ import {Router} from "@angular/router";
   providedIn: 'root'
 })
 export class AuthenticationService {
+
+  public username: string | undefined = undefined
 
   constructor(private userService: UserService, private sessionService: SessionService, private securityService: SecurityService, private router: Router) {
     this.testSessionServiceToken()
@@ -21,6 +23,7 @@ export class AuthenticationService {
         this.router.navigateByUrl('auth')
       } else {
         console.log("Session token check OK")
+        this.username = resp.username
       }
     })
   }
@@ -29,13 +32,14 @@ export class AuthenticationService {
     return this.userService.userLogin({
       username, password
     }).pipe(
-      map(tokenResponse => {
-        this.sessionService.sessionToken = tokenResponse.token
+      map(response => {
+        this.sessionService.sessionToken = response.token
+        this.username = response.username
         return undefined
       }),
-      catchError(errorResponse => {
+      catchError(err => {
         this.sessionService.sessionToken = undefined
-        return of(errorResponse.error as ErrorResponse)
+        return of(err.error as ErrorResponse)
       })
     )
   }
@@ -53,17 +57,17 @@ export class AuthenticationService {
     )
   }
 
-  testToken(): Observable<boolean> {
+  testToken(): Observable<BasicUserDataResponse | undefined> {
     // If there's no session token in the local storage, we'll just act as if everything was ok
     if (!this.sessionService.sessionToken)
-      return of(true)
+      return of(undefined)
 
     return this.securityService.securedRoute().pipe(
       map(resp => {
-        return true
+        return resp
       }),
       catchError(error => {
-        return of(false)
+        return of(undefined)
       })
     )
   }

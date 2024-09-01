@@ -6,6 +6,9 @@ import {OverviewComponent} from "./pages/dashboard/overview/overview.component";
 import {GroupsComponent} from "./pages/dashboard/groups/groups.component";
 import {authenticationGuard} from "./guard/authentication.guard";
 import {ExplorerComponent} from "./pages/dashboard/explorer/explorer.component";
+import {UsersComponent} from "./pages/dashboard/users/users.component";
+import {AdminComponent} from "./pages/dashboard/admin/admin.component";
+import {adminGuard} from "./guard/admin.guard";
 
 export const routes: Routes = [
   {
@@ -34,6 +37,15 @@ export const routes: Routes = [
       {
         path: 'explorer',
         component: ExplorerComponent
+      },
+      {
+        path: 'users',
+        component: UsersComponent
+      },
+      {
+        path: 'admin',
+        component: AdminComponent,
+        canActivate: [adminGuard]
       }
     ]
   },

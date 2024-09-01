@@ -1,4 +1,5 @@
 export * from './addUserToGroupRequest';
+export * from './basicUserDataResponse';
 export * from './createGroupRequest';
 export * from './diskUsageResponse';
 export * from './documentListingResponseInner';
@@ -7,9 +8,9 @@ export * from './groupIdResponse';
 export * from './groupListingResponseInner';
 export * from './leaveGroupRequest';
 export * from './loginRequest';
+export * from './loginResponse';
 export * from './monitorResponse';
 export * from './monitoringIdResponse';
 export * from './registerRequest';
 export * from './removeUserFromGroupRequest';
-export * from './tokenResponse';
 export * from './userEditRequest';

@@ -42,7 +42,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/tokenResponse"
+                $ref: "#/components/schemas/loginResponse"
 
   /drop:
     post:
@@ -74,6 +74,22 @@ paths:
     get:
       operationId: securedRoute
       summary: A sample secured route for testing token validity
+      tags:
+        - Security
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/basicUserDataResponse"
+        403:
+          description: Forbidden
+
+  /secured/admin:
+    get:
+      operationId: securedAdminRoute
+      summary: A secured route that requires that the user is an admin
       tags:
         - Security
       responses:
@@ -262,10 +278,15 @@ components:
         password:
           type: string
 
-    tokenResponse:
+    loginResponse:
       type: object
+      required:
+        - token
+        - username
       properties:
         token:
+          type: string
+        username:
           type: string
 
     errorResponse:
@@ -426,4 +447,12 @@ components:
           byteSize:
             type: integer
             format: int64
+
+    basicUserDataResponse:
+      type: object
+      required:
+        - username
+      properties:
+        username:
+          type: string
 

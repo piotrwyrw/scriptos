@@ -20,9 +20,9 @@ import { Observable }                                        from 'rxjs';
 // @ts-ignore
 import { LoginRequest } from '../model/loginRequest';
 // @ts-ignore
-import { RegisterRequest } from '../model/registerRequest';
+import { LoginResponse } from '../model/loginResponse';
 // @ts-ignore
-import { TokenResponse } from '../model/tokenResponse';
+import { RegisterRequest } from '../model/registerRequest';
 // @ts-ignore
 import { UserEditRequest } from '../model/userEditRequest';
 
@@ -235,9 +235,9 @@ export class UserService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public userLogin(loginRequest: LoginRequest, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<TokenResponse>;
-    public userLogin(loginRequest: LoginRequest, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<TokenResponse>>;
-    public userLogin(loginRequest: LoginRequest, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<TokenResponse>>;
+    public userLogin(loginRequest: LoginRequest, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<LoginResponse>;
+    public userLogin(loginRequest: LoginRequest, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<LoginResponse>>;
+    public userLogin(loginRequest: LoginRequest, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<LoginResponse>>;
     public userLogin(loginRequest: LoginRequest, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
         if (loginRequest === null || loginRequest === undefined) {
             throw new Error('Required parameter loginRequest was null or undefined when calling userLogin.');
@@ -289,7 +289,7 @@ export class UserService {
         }
 
         let localVarPath = `/login`;
-        return this.httpClient.request<TokenResponse>('post', `${this.configuration.basePath}${localVarPath}`,
+        return this.httpClient.request<LoginResponse>('post', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 body: loginRequest,
